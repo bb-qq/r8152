@@ -1,0 +1,22 @@
+#!/bin/sh
+# Copyright (C) 2000-2017 Synology Inc. All rights reserved.
+
+case $1 in
+	start)
+		/sbin/insmod $SYNOPKG_PKGDEST/r8152/r8152.ko
+		exit 0
+	;;
+	stop)
+		/sbin/rmmod $SYNOPKG_PKGDEST/r8152/r8152.ko
+		exit 0
+	;;
+	status)
+		/sbin/lsmod | grep r8152 && exit 0 || exit 3
+	;;
+	killall)
+        ;;
+	log)
+		exit 0
+	;;
+esac
+

@@ -1,0 +1,4 @@
+# Copyright (C) 2000-2017 Synology Inc. All rights reserved.
+
+[default]
+all="6.2"

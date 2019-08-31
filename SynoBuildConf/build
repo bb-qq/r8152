@@ -1,0 +1,10 @@
+#!/bin/bash
+# Copyright (C) 2000-2017 Synology Inc. All rights reserved.
+
+case ${MakeClean} in
+	[Yy][Ee][Ss])
+		make clean
+		;;
+esac
+
+make ${MAKE_FLAGS} KSRC=$KSRC CROSS_COMPILE=$CROSS_COMPILE ARCH=$ARCH
