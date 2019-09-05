@@ -38,3 +38,34 @@ Currently I only confirmed that a Japanese product "USB-LAN2500R" works. If you 
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A)
 * [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C)
+
+## Performance test
+
+### Environment
+* DS918+ (USB-LAN2500R)
+* direct connection with PC (AQN-107)
+* [native iperf3](http://www.jadahl.com/iperf-arp-scan/DSM_6.2/)
+    * using docker causes high CPU load
+
+### Result
+````
+Connecting to host 192.168.0.xxx, port 5201
+[  4] local 192.168.0.xxx port 50366 connected to 192.168.0.xxx port 5201
+[ ID] Interval           Transfer     Bandwidth
+[  4]   0.00-1.00   sec   266 MBytes  2.23 Gbits/sec
+[  4]   1.00-2.00   sec   274 MBytes  2.30 Gbits/sec
+[  4]   2.00-3.00   sec   278 MBytes  2.33 Gbits/sec
+[  4]   3.00-4.00   sec   278 MBytes  2.33 Gbits/sec
+[  4]   4.00-5.00   sec   278 MBytes  2.33 Gbits/sec
+[  4]   5.00-6.00   sec   278 MBytes  2.34 Gbits/sec
+[  4]   6.00-7.00   sec   274 MBytes  2.30 Gbits/sec
+[  4]   7.00-8.00   sec   267 MBytes  2.24 Gbits/sec
+[  4]   8.00-9.00   sec   269 MBytes  2.26 Gbits/sec
+[  4]   9.00-10.00  sec   271 MBytes  2.27 Gbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[  4]   0.00-10.00  sec  2.67 GBytes  2.29 Gbits/sec                  sender
+[  4]   0.00-10.00  sec  2.67 GBytes  2.29 Gbits/sec                  receiver
+
+iperf Done.
+````
