@@ -1,3 +1,5 @@
+[日本語版はこちら](readme.ja.md)
+
 # realtek RTL8152/RTL8153/RTL8156 driver for Synology
 
 This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
@@ -32,12 +34,12 @@ If you want to use the driver on other products, please create a issue.
 
 ## Supported RTL8156(2.5Gbps) based devices
 
-Currently I only confirmed that a Japanese product "USB-LAN2500R" works. If you got other products and they do not work, please create a issue with its vendor id.
+Currently I only confirmed products marked "confirmed working". If you got other products and they do not work, please create a issue with its vendor id.
 
+* [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C, confirmed working)
 * [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, confirmed working, Japan only)
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A)
 * [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
-* [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C)
 
 ## Performance test
 
