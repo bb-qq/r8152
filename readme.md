@@ -15,7 +15,8 @@ https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 ## How to configure
 
 1. [Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and login your NAS
-2. Configure IP address for eth2 interface with "synonet" command
+2. Up the interface added by the driver (eg. eth2) by ``ifconfig eth2 up``
+3. Configure IP address by Web GUI
 
 Note: IP address configuration will be lost after the device is rebooted. If you find a solution for this issue, please share it.
 
