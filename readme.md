@@ -39,8 +39,10 @@ Currently I only confirmed products marked "confirmed working". If you got other
 
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C, confirmed working)
 * [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, confirmed working, Japan only)
+* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (Type-A, confirmed working, Japan only)
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A)
 * [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
+* [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A)
 
 ## Performance test
 
