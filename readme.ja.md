@@ -36,6 +36,7 @@ https://www.synology.com/ja-jp/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 今は「動作確認済」と書かれた製品のみ動作確認ができています。もし他の製品を使用していて動作しない場合は VID/PID とともに Issue でお知らせ下さい。
 
 * [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, 動作確認済)
+* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (Type-A, 動作確認済)
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C, 動作確認済)
 * [CLUB 3D CAC-1420](https://amzn.to/2ACCceh) (Type-A)
 * [TUC-ET2G](https://amzn.to/2V6LWXP) (Type-C)
