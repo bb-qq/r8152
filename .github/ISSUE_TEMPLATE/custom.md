@@ -38,7 +38,7 @@ assignees: ''
 (paste output here)
 ````
 
-### Output of ``lsusb`` command
+### Output of ``ifconfig -a`` command
 
 ````
 (paste output here)
