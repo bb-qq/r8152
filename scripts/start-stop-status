@@ -1,12 +1,51 @@
 #!/bin/sh
 # Copyright (C) 2000-2017 Synology Inc. All rights reserved.
 
+set_interfaces()
+{
+  action=$1
+  driver_name="r8152"
+  for interface_name in $(ls /sys/class/net)
+  do
+    # Skip loopback interface, since it doesn have a device/driver
+    # folder.
+      if [ "$interface_name" = "lo" ]
+      then
+        continue
+      fi
+      # For all other interfaces list the device driver folder and
+      # bring interface up/down if the device driver folder links to
+      # something with r8152 in its name.
+      driver_location=$(ls -ld /sys/class/net/$interface_name/device/driver)
+      interface_has_r8152_driver=false
+      if [ ! -z "$(echo "$driver_location" | grep $driver_name)" ]
+      then
+        interface_has_r8152_driver=true
+      fi
+      if [ $interface_has_r8152_driver = true ]
+      then
+        config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
+        config_storage_location=$SYNOPKG_PKGDEST/ifcfg-$interface_name
+        if [ -f "$config_file" ] && [ "$action" = "down" ]
+        then
+          cp $config_file $config_storage_location
+        elif [ "$action" = "up" ] && [ -f "$config_storage_location" ]
+        then
+          cp $config_storage_location $config_file
+        fi
+        ifconfig $interface_name $action
+      fi
+  done
+}
+
 case $1 in
 	start)
 		/sbin/insmod $SYNOPKG_PKGDEST/r8152/r8152.ko
+		set_interfaces up
 		exit 0
 	;;
 	stop)
+		set_interfaces down
 		/sbin/rmmod $SYNOPKG_PKGDEST/r8152/r8152.ko
 		exit 0
 	;;
