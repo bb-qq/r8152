@@ -4,7 +4,7 @@
 source /pkgscripts-ng/include/pkg_util.sh
 
 package="r8152"
-version="2.12.0-1"
+version="2.12.0-2"
 displayname="RTL8152/RTL8153 driver"
 maintainer="bb-qq"
 arch="$(pkg_get_platform)"
