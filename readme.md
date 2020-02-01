@@ -1,24 +1,8 @@
 [日本語版はこちら](readme.ja.md)
 
-# realtek RTL8152/RTL8153/RTL8156 driver for Synology
+# DSM driver for realtek RTL8152/RTL8153/RTL8156 based USB Ethernet adapters
 
 This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
-
-## How to install
-
-1. Go to "Package Center"
-2. Press "Manual Install"
-3. Chose a driver package downloaded from the [release page](https://github.com/bb-qq/r8152/releases).
-
-https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
-
-## How to configure
-
-1. [Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and login your NAS
-2. Up the interface added by the driver (eg. eth2) by ``ifconfig eth2 up``
-3. Configure IP address by Web GUI
-
-Note: IP address configuration will be lost after the device is rebooted. If you find a solution for this issue, please share it.
 
 ## Supported NAS platform
 
@@ -31,7 +15,9 @@ Note: IP address configuration will be lost after the device is rebooted. If you
     * DS418play
     * DS218+
 
-If you want to use the driver on other products, please create a issue.
+You can download drivers including other platforms from the [Release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [this page](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms.
+
+I very much appreciate if you report whether it works.
 
 ## Supported RTL8156(2.5Gbps) based devices
 
@@ -43,6 +29,18 @@ Currently I only confirmed products marked "confirmed working". If you got other
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A)
 * [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
 * [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A)
+
+## How to install
+
+1. Go to "Package Center"
+2. Press "Manual Install"
+3. Chose a driver package downloaded from the Release page.
+
+Detailed instruction is [here](https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy).
+
+## How to configure
+
+Just use "Control Panel".
 
 ## Performance test
 
