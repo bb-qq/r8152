@@ -41,6 +41,7 @@ set_interfaces()
 case $1 in
 	start)
 		/sbin/insmod $SYNOPKG_PKGDEST/r8152/r8152.ko
+		sleep 5
 		set_interfaces up
 		exit 0
 	;;
