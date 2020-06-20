@@ -29,6 +29,7 @@ Currently I only confirmed products marked "confirmed working". If you got other
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A, confirmed working)
 * [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
 * [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A)
+* [UGREEN USB C to 2.5G Ethernet Adapter](https://amzn.to/3fzXmfE) (Type-C, confirmed working)
 
 ## How to install
 
