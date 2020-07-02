@@ -18,7 +18,12 @@
 
 - Example of setting speed
 
-	# ethtool -s eth0 autoneg on advertise 0x802f (2.5G)
+	2.5G before kernel v4.10
+	# ethtool -s eth0 autoneg on advertise 0x802f
+
+	2.5G for kernel v4.10 and later
+	# ethtool -s eth0 autoneg on advertise 0x80000000002f
+
 	# ethtool -s eth0 autoneg on advertise 0x002f (1G)
 	# ethtool -s eth0 autoneg on advertise 0x000f (100M full)
 	# ethtool -s eth0 autoneg on advertise 0x0003 (10M full)
@@ -26,3 +31,11 @@
 - Disable center tap short
 
 	# make CONFIG_CTAP_SHORT=OFF modules
+
+- Ring parameter
+
+	Show Ring parameter
+	# ethtool -g eth0
+
+	Changes the number of ring entries for the Rx ring.
+	# ethtool -G eth0 rx 100
