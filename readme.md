@@ -19,6 +19,8 @@ You can download drivers including other platforms from the [Release page](https
 
 I very much appreciate if you report whether it works.
 
+NOTE: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
+
 ## Supported RTL8156(2.5Gbps) based devices
 
 Currently I only confirmed products marked "confirmed working". If you got other products and they do not work, please create a issue with its vendor id.
