@@ -41,7 +41,7 @@ set_interfaces()
           then
             synonet --dhcp $interface_name
           fi
-		fi	
+        fi	
       fi
   done
 }
