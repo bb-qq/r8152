@@ -35,7 +35,7 @@ set_interfaces()
         fi
         ifconfig $interface_name $action
         if [ "$action" = "up" ] && [ -r "$config_file" ]
-		then
+        then
           source $config_file
           if [ "$BOOTPROTO" = "dhcp" ]
           then
