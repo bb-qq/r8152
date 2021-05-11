@@ -36,11 +36,11 @@ set_interfaces()
         ifconfig $interface_name $action
 		if [ "$action" = "up" ] && [ -r "$config_file" ]
 		then
-		  source $config_file
-		  if [ "$BOOTPROTO" = "dhcp" ]
-		  then
-		    synonet --dhcp $interface_name
-		  fi
+          source $config_file
+          if [ "$BOOTPROTO" = "dhcp" ]
+          then
+            synonet --dhcp $interface_name
+          fi
 		fi	
       fi
   done
