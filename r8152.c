@@ -19078,6 +19078,11 @@ static int rtl8152_probe(struct usb_interface *intf,
 		return -ENODEV;
 
 	usb_reset_device(udev);
+#ifdef CONFIG_USB_SUSPEND
+	usb_disable_autosuspend(udev);
+#else
+	usb_unlocked_disable_lpm(udev);
+#endif
 	netdev = alloc_etherdev(sizeof(struct r8152));
 	if (!netdev) {
 		dev_err(&intf->dev, "Out of memory\n");
@@ -19246,7 +19251,9 @@ static int rtl8152_probe(struct usb_interface *intf,
 	/* usb_enable_autosuspend(udev); */
 
 	netif_info(tp, probe, netdev, "%s\n", DRIVER_VERSION);
+	netif_info(tp, probe, netdev, "chip version %d\n", version);
 	netif_info(tp, probe, netdev, "%s\n", PATENTS);
+
 
 	ret = sysfs_create_group(&netdev->dev.kobj, &rtk_adv_grp);
 	if (ret < 0) {
