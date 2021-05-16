@@ -19253,6 +19253,7 @@ static int rtl8152_probe(struct usb_interface *intf,
 	netif_info(tp, probe, netdev, "%s\n", DRIVER_VERSION);
 	netif_info(tp, probe, netdev, "chip version %d\n", version);
 	netif_info(tp, probe, netdev, "%s\n", PATENTS);
+	netif_info(tp, probe, netdev, "chip rev %d\n", tp->version);
 
 
 	ret = sysfs_create_group(&netdev->dev.kobj, &rtk_adv_grp);
