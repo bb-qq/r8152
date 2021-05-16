@@ -34,6 +34,14 @@ set_interfaces()
           cp $config_storage_location $config_file
         fi
         ifconfig $interface_name $action
+        if [ "$action" = "up" ] && [ -r "$config_file" ]
+        then
+          source $config_file
+          if [ "$BOOTPROTO" = "dhcp" ]
+          then
+            synonet --dhcp $interface_name
+          fi
+        fi	
       fi
   done
 }
