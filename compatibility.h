@@ -8,7 +8,12 @@
 #include <linux/init.h>
 #include <linux/version.h>
 #include <linux/in.h>
+
+#include <linux/acpi.h>
+// FIXME: Some platform do not have asm/acpi.h which is included by acpi/acpi.h
+#ifdef ACPI_TYPE_BUFFER
 #include <acpi/acpi.h>
+#endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 	#include <linux/mdio.h>
@@ -30,13 +35,24 @@
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0)
 	#ifndef __has_attribute
 	# define __GCC4_has_attribute___fallthrough__         0
-	#endif
-
-	#if __has_attribute(__fallthrough__)
-	# define fallthrough                    __attribute__((__fallthrough__))
 	#else
+	# if __has_attribute (__fallthrough__)
+	#  define fallthrough                    __attribute__((__fallthrough__))
+	# endif
+	#endif
+	
+	#ifndef fallthrough
 	# define fallthrough                    do {} while (0)  /* fallthrough */
 	#endif
+
+	// https://github.com/torvalds/linux/commit/99b60d56a35b18af267f275559a530db372bfad7
+	#define MDIO_EEE_2_5GT		0x0001	/* 2.5GT EEE cap */
+	#define MDIO_EEE_5GT		0x0002	/* 5GT EEE cap */
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,1,0)	
+	// https://github.com/torvalds/linux/commit/7fd8afa8933a095a97995885740999f174e61b60
+	#define MDIO_AN_10GBT_CTRL_ADV2_5G	0x0080	/* Advertise 2.5GBASE-T */
+	#define MDIO_AN_10GBT_CTRL_ADV5G	0x0100	/* Advertise 5GBASE-T */
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,20,0)
@@ -614,6 +630,7 @@
 		skb->next = NULL;
 	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,1,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0) */
