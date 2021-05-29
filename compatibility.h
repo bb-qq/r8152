@@ -8,6 +8,7 @@
 #include <linux/init.h>
 #include <linux/version.h>
 #include <linux/in.h>
+#include <acpi/acpi.h>
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 	#include <linux/mdio.h>
@@ -15,6 +16,27 @@
 	#include <uapi/linux/mdio.h>
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0) */
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31) */
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0)
+	#define from_tasklet(var, callback_tasklet, tasklet_fieldname)	\
+		container_of((struct tasklet_struct *)callback_tasklet, typeof(*var), tasklet_fieldname)
+
+	#define tasklet_setup(t, fun)	tasklet_init(t, fun, (unsigned long)t)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0)
+	/* Iterate through singly-linked GSO fragments of an skb. */
+	#define skb_list_walk_safe(first, skb, next_skb)                               \
+		for ((skb) = (first), (next_skb) = (skb) ? (skb)->next : NULL; (skb);  \
+		     (skb) = (next_skb), (next_skb) = (skb) ? (skb)->next : NULL)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0)
+	#ifndef __has_attribute
+	# define __GCC4_has_attribute___fallthrough__         0
+	#endif
+
+	#if __has_attribute(__fallthrough__)
+	# define fallthrough                    __attribute__((__fallthrough__))
+	#else
+	# define fallthrough                    do {} while (0)  /* fallthrough */
+	#endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,20,0)
@@ -58,6 +80,11 @@
 	#define BITS_PER_BYTE				8
 	#define reinit_completion(x)			((x)->done = 0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,12,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0)
+	#define DEVICE_ATTR_RW(_name) \
+		struct device_attribute dev_attr_##_name = __ATTR(_name, 0644, _name##_show, _name##_store)
+	#define DEVICE_ATTR_RO(_name) \
+		struct device_attribute dev_attr_##_name = __ATTR_RO(_name)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
 	#define NETIF_F_HW_VLAN_CTAG_RX			NETIF_F_HW_VLAN_RX
 	#define NETIF_F_HW_VLAN_CTAG_TX			NETIF_F_HW_VLAN_TX
@@ -462,6 +489,7 @@
 	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0) */
 	static inline bool usb_device_no_sg_constraint(struct usb_device *udev)
 	{
 		return 0;
@@ -516,7 +544,14 @@
 			linkmode_clear_bit(nr, addr);
 	}
 
+	static inline void skb_mark_not_on_list(struct sk_buff *skb)
+	{
+		skb->next = NULL;
+	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0) */
 
 #ifndef FALSE
 	#define TRUE	1
