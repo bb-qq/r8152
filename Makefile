@@ -16,11 +16,14 @@ endif
 $(TARGET):
 	$(MAKE) -C $(KSRC) M=$(PWD) modules
 
+spk_su: spk_su.c
+	$(CC) -std=c99 -o $(@) $(<)
+
 .PHONY: clean
 clean:
 	rm -rf *.o $(TARGET)
 
 .PHONY: install
-install: $(TARGET)
+install: $(TARGET) spk_su
 	mkdir -p $(DESTDIR)/r8152/
-	install $< $(DESTDIR)/r8152/
+	install $(^) $(DESTDIR)/r8152/

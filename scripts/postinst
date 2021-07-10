@@ -1,4 +1,18 @@
 #!/bin/sh
-# Copyright (C) 2000-2017 Synology Inc. All rights reserved.
+spk_su="/opt/sbin/spk_su"
+privilege_file=`dirname $0`/../conf/privilege
+
+if [ -w "${privilege_file}" ]; then
+    # DSM 7 beta
+    sed -i 's/package/root/g' "${privilege_file}"
+elif [ -e "${privilege_file}" ]; then
+    # DSM 7 release
+    if [ -x "${spk_su}" ]; then
+        "${spk_su}" "${SYNOPKG_PKGNAME}"
+    else
+        echo "Failed to change ${privilege_file}" > /dev/stderr
+        exit 5
+    fi
+fi
 
 exit 0
