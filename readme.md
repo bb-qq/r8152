@@ -1,5 +1,3 @@
-[日本語版はこちら](readme.ja.md)
-
 # DSM driver for realtek RTL8152/RTL8153/RTL8156 based USB Ethernet adapters
 
 This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
@@ -35,15 +33,24 @@ Currently I only confirmed products marked "confirmed working". If you got other
 
 ## How to install
 
+### Preparation
+
+[Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and login your NAS.
+
+### Installation
+
 1. Go to "Package Center"
 2. Press "Manual Install"
-3. Chose a driver package downloaded from the Release page.
+3. Chose a driver package downloaded from the [release page](https://github.com/bb-qq/aqc111/releases).
+4. [DSM7] The installation will fail the first time. After that, run the following command from the SSH terminal:
+   `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
+5. [DSM7] Retry installation. (You don't need above DSM7 specific steps at the next time.)
 
-Detailed instruction is [here](https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy).
+https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
 ## How to configure
 
-Just use "Control Panel".
+You can configure the IP addresses and MTU of the added NICs from the DSM UI in the same way as the built-in NICs.
 
 ## Performance test
 
