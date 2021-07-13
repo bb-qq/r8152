@@ -12,6 +12,8 @@ This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
     * DS718+
     * DS418play
     * DS218+
+* geminilake based products
+    * DS720+ (confirmed working on front usb port)
 
 You can download drivers including other platforms from the [Release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [this page](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms.
 
@@ -30,6 +32,7 @@ Currently I only confirmed products marked "confirmed working". If you got other
 * [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
 * [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A)
 * [UGREEN USB C to 2.5G Ethernet Adapter](https://amzn.to/3fzXmfE) (Type-C, confirmed working)
+* [Plugable 2.5G USB C](https://www.amazon.fr/gp/product/B084L4JL9K/ref=ppx_yo_dt_b_asin_title_o06_s00?ie=UTF8&psc=1) (Type-C, confirmed working)
 
 ## How to install
 
