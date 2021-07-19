@@ -59,7 +59,17 @@ set_interfaces()
           then
             cp $config_storage_location_ovs $config_file_ovs
           fi
-          ifconfig ovs_$interface_name $action
+          if [ "$action" = "up" ]
+          then
+            ovs-vsctl add-br ovs_$interface_name
+            ovs-vsctl add-port ovs_$interface_name $interface_name
+            ifconfig ovs_$interface_name $action
+          fi
+          if [ "$action" = "down" ]
+          then
+            ifconfig ovs_$interface_name $action
+            ovs-vsctl del-br ovs_$interface_name
+          fi
         fi
         if [ "$action" = "up" ] && [ -r "$config_file" ] && [ ! is_ovs_enable ]
         then
