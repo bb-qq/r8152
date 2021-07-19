@@ -50,7 +50,7 @@ set_interfaces()
           cp $config_storage_location $config_file
         fi
         ifconfig $interface_name $action
-        if [ is_ovs_enable ]
+        if is_ovs_enable
         then
           if [ -f "$config_file_ovs" ] && [ "$action" = "down" ]
           then
@@ -71,7 +71,7 @@ set_interfaces()
             ovs-vsctl del-br ovs_$interface_name
           fi
         fi
-        if [ "$action" = "up" ] && [ -r "$config_file" ] && [ ! is_ovs_enable ]
+        if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
         then
           source $config_file
           if [ "$BOOTPROTO" = "dhcp" ]
@@ -79,7 +79,7 @@ set_interfaces()
             synonet --dhcp $interface_name
           fi
         fi
-        if [ "$action" = "up" ] && [ -r "$config_file_ovs" ] && [ is_ovs_enable ]
+        if [ "$action" = "up" ] && [ -r "$config_file_ovs" ] && is_ovs_enable
         then
           source $config_file_ovs
           if [ "$BOOTPROTO" = "dhcp" ]
