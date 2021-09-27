@@ -791,6 +791,7 @@ enum rtl8152_flags {
 };
 
 /* Define these values to match your device */
+#define VENDOR_ID_ASUS			0x0b05
 #define VENDOR_ID_REALTEK		0x0bda
 #define VENDOR_ID_MICROSOFT		0x045e
 #define VENDOR_ID_SAMSUNG		0x04e8
@@ -20194,6 +20195,9 @@ static const struct usb_device_id rtl8152_table[] = {
 	
 	/* LINKSYS */
 	{REALTEK_USB_DEVICE(VENDOR_ID_LINKSYS, 0x0041)},
+	
+	/* ASUS */
+	{REALTEK_USB_DEVICE(VENDOR_ID_ASUS, 0x1976)},
 
 	/* Getac */
 	{REALTEK_USB_DEVICE(0x2baf, 0x0012)},

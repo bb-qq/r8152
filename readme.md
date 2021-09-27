@@ -24,12 +24,14 @@ NOTE: I recommend using front ports to connect devices because some users report
 Currently I only confirmed products marked "confirmed working". If you got other products and they do not work, please create a issue with its vendor id.
 
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C, confirmed working)
+  * NOTE: The included Type A-C conversion adapter is directional. There's a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
 * [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, confirmed working, Japan only)
 * [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (Type-A, confirmed working, Japan only)
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A, confirmed working)
-* [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
-* [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A)
+* [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C, confirmed working)
+* [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A, confirmed working)
 * [UGREEN USB C to 2.5G Ethernet Adapter](https://amzn.to/3fzXmfE) (Type-C, confirmed working)
+* biaze KZ13 (Type-A, confirmed working)
 
 ## How to install
 
