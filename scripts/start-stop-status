@@ -1,15 +1,29 @@
 #!/bin/sh
 # Copyright (C) 2000-2017 Synology Inc. All rights reserved.
 
+is_ovs_enable ()
+{
+    if [ ! -f  '/usr/syno/etc/synoovs/ovs_reg.conf' ]; then
+        return 1
+    fi
+
+    use=`cat /usr/syno/etc/synoovs/ovs_reg.conf | wc -l`
+    if [ 0 -eq $use ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 set_interfaces()
 {
   action=$1
   driver_name="r8152"
   for interface_name in $(ls /sys/class/net)
   do
-    # Skip loopback interface, since it doesn have a device/driver
+    # Skip loopback/docker interface, since it doesn have a device/driver
     # folder.
-      if [ "$interface_name" = "lo" ]
+      if [[ "$interface_name" = "lo" || "$interface_name" == "docker"* || "$interface_name" == "ovs"* || "$interface_name" == "syno"* || "$interface_name" == "sit"* ]]
       then
         continue
       fi
@@ -25,7 +39,9 @@ set_interfaces()
       if [ $interface_has_r8152_driver = true ]
       then
         config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
+        config_file_ovs=/etc/sysconfig/network-scripts/ifcfg-ovs_$interface_name
         config_storage_location=$SYNOPKG_PKGDEST/ifcfg-$interface_name
+        config_storage_location_ovs=$SYNOPKG_PKGDEST/ifcfg-ovs_$interface_name
         if [ -f "$config_file" ] && [ "$action" = "down" ]
         then
           cp $config_file $config_storage_location
@@ -34,14 +50,43 @@ set_interfaces()
           cp $config_storage_location $config_file
         fi
         ifconfig $interface_name $action
-        if [ "$action" = "up" ] && [ -r "$config_file" ]
+        if is_ovs_enable
+        then
+          if [ -f "$config_file_ovs" ] && [ "$action" = "down" ]
+          then
+            cp $config_file_ovs $config_storage_location_ovs
+          elif [ "$action" = "up" ] && [ -f "$config_storage_location_ovs" ]
+          then
+            cp $config_storage_location_ovs $config_file_ovs
+          fi
+          if [ "$action" = "up" ]
+          then
+            ovs-vsctl add-br ovs_$interface_name
+            ovs-vsctl add-port ovs_$interface_name $interface_name
+            ifconfig ovs_$interface_name $action
+          fi
+          if [ "$action" = "down" ]
+          then
+            ifconfig ovs_$interface_name $action
+            ovs-vsctl del-br ovs_$interface_name
+          fi
+        fi
+        if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
         then
           source $config_file
           if [ "$BOOTPROTO" = "dhcp" ]
           then
             synonet --dhcp $interface_name
           fi
-        fi	
+        fi
+        if [ "$action" = "up" ] && [ -r "$config_file_ovs" ] && is_ovs_enable
+        then
+          source $config_file_ovs
+          if [ "$BOOTPROTO" = "dhcp" ]
+          then
+            synonet --dhcp ovs_$interface_name
+          fi
+        fi
       fi
   done
 }
