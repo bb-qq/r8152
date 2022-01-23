@@ -55,10 +55,13 @@ https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
 You can configure the IP addresses and MTU of the added NICs from the DSM UI in the same way as the built-in NICs.
 
+Option: I recommend setting MTU to 9000 and SMB protocol version to v3 for better performance.
+
 ## Performance test
 
 ### Environment
 * DS918+ (USB-LAN2500R)
+* DSM 6.2
 * direct connection with PC (AQN-107: discontinued, but almost equivalent to [ASUS XG-C100C](https://amzn.to/3fPJUX3))
 * [native iperf3](http://www.jadahl.com/iperf-arp-scan/DSM_6.2/)
     * using docker causes high CPU load
