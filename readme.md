@@ -4,7 +4,7 @@ This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
 
 ## Supported NAS platform
 
-* DSM 6.2
+* DSM 7.0
 * apollolake based products
     * DS918+ (confirmed working)
     * DS620slim
@@ -13,25 +13,26 @@ This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
     * DS418play
     * DS218+
 
-You can download drivers including other platforms from the [Release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [this page](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms.
+You can download drivers including other platforms from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms. If you are using such an unconfirmed models, the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) may be helpful.
 
 I very much appreciate if you report whether it works.
 
-NOTE: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
+***NOTE***: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
 
 ## Supported RTL8156(2.5Gbps) based devices
 
-Currently I only confirmed products marked "confirmed working". If you got other products and they do not work, please create a issue with its vendor id.
-
-* [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C, confirmed working)
+* [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C)
   * NOTE: The included Type A-C conversion adapter is directional. There's a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
-* [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, confirmed working, Japan only)
-* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (Type-A, confirmed working, Japan only)
-* [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A, confirmed working)
-* [TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C, confirmed working)
-* [CableCreation B07VNFLTLD](https://amzn.to/39yfZyj) (Type-A, confirmed working)
-* [UGREEN USB C to 2.5G Ethernet Adapter](https://amzn.to/3fzXmfE) (Type-C, confirmed working)
+* [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, Japan only)
+* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (Type-A, Japan only)
+* [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A,)
+* [TRENDnet TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
+* [CableCreation 2.5G Ethernet to USB Adapter](https://amzn.to/39yfZyj) (Type-A)
+* [UGREEN USB C to 2.5G Ethernet Adapter](https://amzn.to/3fzXmfE) (Type-C)
 * biaze KZ13 (Type-A, confirmed working)
+
+See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
+If you got other products not listed and they do not work, please create a issue with the output of lsusb.
 
 ## How to install
 
@@ -58,7 +59,7 @@ You can configure the IP addresses and MTU of the added NICs from the DSM UI in 
 
 ### Environment
 * DS918+ (USB-LAN2500R)
-* direct connection with PC (AQN-107)
+* direct connection with PC (AQN-107: discontinued, but almost equivalent to [ASUS XG-C100C](https://amzn.to/3fPJUX3))
 * [native iperf3](http://www.jadahl.com/iperf-arp-scan/DSM_6.2/)
     * using docker causes high CPU load
 
