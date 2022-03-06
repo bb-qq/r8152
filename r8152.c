@@ -41,6 +41,12 @@
 			"following patents:\n" \
 			"\t\tUS6,570,884, US6,115,776, and US6,327,625.\n"
 
+#ifndef __x86_64
+#define FORCE_OVERRIDE_RXBUF_SZ 8192
+#else
+#define FORCE_OVERRIDE_RXBUF_SZ 16384
+#endif
+
 #define R8152_PHY_ID		32
 
 #define PLA_IDR			0xc000
@@ -18847,7 +18853,11 @@ static int rtl8152_change_mtu(struct net_device *dev, int new_mtu)
 		max_mtu = ETH_DATA_LEN;
 		break;
 	}
-
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+	if (max_mtu > size_to_mtu(FORCE_OVERRIDE_RXBUF_SZ)) {
+		max_mtu = size_to_mtu(FORCE_OVERRIDE_RXBUF_SZ);
+	}
+#endif
 	if (new_mtu < 68 || new_mtu > max_mtu)
 		return -EINVAL;
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,10,0) */
@@ -18953,7 +18963,11 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->in_nway		= rtl8152_in_nway;
 		ops->hw_phy_cfg		= r8152b_hw_phy_cfg;
 		ops->autosuspend_en	= rtl_runtime_suspend_enable;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		tp->rx_buf_sz		= 16 * 1024;
+#endif
 		tp->eee_en		= true;
 		tp->eee_adv		= MDIO_EEE_100TX;
 		break;
@@ -18976,10 +18990,14 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->hw_phy_cfg		= r8153_hw_phy_cfg;
 		ops->autosuspend_en	= rtl8153_runtime_enable;
 		ops->change_mtu		= rtl8153_change_mtu;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		if (tp->udev->speed < USB_SPEED_SUPER)
 			tp->rx_buf_sz	= 16 * 1024;
 		else
 			tp->rx_buf_sz	= 32 * 1024;
+#endif
 		tp->eee_en		= true;
 		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
 		break;
@@ -19000,7 +19018,11 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->hw_phy_cfg		= r8153b_hw_phy_cfg;
 		ops->autosuspend_en	= rtl8153b_runtime_enable;
 		ops->change_mtu		= rtl8153_change_mtu;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		tp->rx_buf_sz		= 32 * 1024;
+#endif
 		tp->eee_en		= true;
 		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
 		break;
@@ -19019,7 +19041,11 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->in_nway		= rtl8153_in_nway;
 		ops->hw_phy_cfg		= r8156_hw_phy_cfg_test;
 		ops->autosuspend_en	= rtl8156_runtime_enable;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		tp->rx_buf_sz		= 48 * 1024;
+#endif
 		tp->support_2500full	= 1;
 		break;
 
@@ -19042,7 +19068,11 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->hw_phy_cfg		= r8156_hw_phy_cfg;
 		ops->autosuspend_en	= rtl8156_runtime_enable;
 		ops->change_mtu		= rtl8156_change_mtu;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		tp->rx_buf_sz		= 48 * 1024;
+#endif
 		tp->support_2500full	= 1;
 		break;
 
@@ -19067,7 +19097,11 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->hw_phy_cfg		= r8156b_hw_phy_cfg;
 		ops->autosuspend_en	= rtl8156_runtime_enable;
 		ops->change_mtu		= rtl8156_change_mtu;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		tp->rx_buf_sz		= 48 * 1024;
+#endif
 		break;
 
 	case RTL_VER_14:
@@ -19085,7 +19119,11 @@ static int rtl_ops_init(struct r8152 *tp)
 		ops->hw_phy_cfg		= r8153c_hw_phy_cfg;
 		ops->autosuspend_en	= rtl8153c_runtime_enable;
 		ops->change_mtu		= rtl8153c_change_mtu;
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+		tp->rx_buf_sz		= FORCE_OVERRIDE_RXBUF_SZ;
+#else
 		tp->rx_buf_sz		= 32 * 1024;
+#endif
 		tp->eee_en		= true;
 		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
 		break;
@@ -19095,7 +19133,6 @@ static int rtl_ops_init(struct r8152 *tp)
 		dev_err(&tp->intf->dev, "Unknown Device\n");
 		break;
 	}
-
 	return ret;
 }
 
@@ -20014,6 +20051,11 @@ static int rtl8152_probe(struct usb_interface *intf,
 		netdev->max_mtu = ETH_DATA_LEN;
 		break;
 	}
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+	if (netdev->max_mtu > size_to_mtu(FORCE_OVERRIDE_RXBUF_SZ)) {
+		netdev->max_mtu = size_to_mtu(FORCE_OVERRIDE_RXBUF_SZ);
+	}
+#endif
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(4,10,0) */
 
 	tp->mii.dev = netdev;
@@ -20079,7 +20121,9 @@ static int rtl8152_probe(struct usb_interface *intf,
 	netif_info(tp, probe, netdev, "%s\n", DRIVER_VERSION);
 	netif_info(tp, probe, netdev, "%s\n", PATENTS);
 	netif_info(tp, probe, netdev, "chip rev %d\n", tp->version);
-
+#ifdef FORCE_OVERRIDE_RXBUF_SZ
+	netif_info(tp, probe, netdev, "rx_buf_sz will be overridden to %d\n", FORCE_OVERRIDE_RXBUF_SZ);
+#endif
 	ret = sysfs_create_group(&netdev->dev.kobj, &rtk_adv_grp);
 	if (ret < 0) {
 		netif_err(tp, probe, netdev, "creat rtk_adv_grp fail\n");
