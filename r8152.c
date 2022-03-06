@@ -806,6 +806,7 @@ enum rtl8152_flags {
 #define VENDOR_ID_NVIDIA		0x0955
 #define VENDOR_ID_TRENDNET		0x20f4
 #define VENDOR_ID_TPLINK		0x2357
+#define VENDOR_ID_ELECOM		0x056e
 
 #define MCU_TYPE_PLA			0x0100
 #define MCU_TYPE_USB			0x0000
@@ -20242,6 +20243,9 @@ static const struct usb_device_id rtl8152_table[] = {
 	
 	/* ASUS */
 	{REALTEK_USB_DEVICE(VENDOR_ID_ASUS, 0x1976)},
+	
+	/* ELECOM */
+	{REALTEK_USB_DEVICE(VENDOR_ID_ELECOM, 0x4017)},
 
 	/* Getac */
 	{REALTEK_USB_DEVICE(0x2baf, 0x0012)},
