@@ -44,7 +44,7 @@ If you got other products not listed and they do not work, please create a issue
 
 1. Go to "Package Center"
 2. Press "Manual Install"
-3. Chose a driver package downloaded from the [release page](https://github.com/bb-qq/aqc111/releases).
+3. Chose a driver package downloaded from the [release page](https://github.com/bb-qq/r8152/releases).
 4. [DSM7] The installation will fail the first time. After that, run the following command from the SSH terminal:
    `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
 5. [DSM7] Retry installation. (You don't need above DSM7 specific steps at the next time.)
