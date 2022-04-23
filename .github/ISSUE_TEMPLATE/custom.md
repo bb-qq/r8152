@@ -1,6 +1,6 @@
 ---
-name: Default issue template
-about: This is a default issue template
+name: Bug/compatibility report
+about: This is a template for reporting your environment and problems about the driver without any shortage.
 title: ''
 labels: ''
 assignees: ''
@@ -21,15 +21,15 @@ assignees: ''
 
 ### Description of your environment
 
-> - connect directly to a PC or using a hub
+> - connect directly to a PC or using a Ethernet switch
 >     - PC: NIC model name or chipset name
->     - Hub: model name
+>     - Ethernet switch: model name
 > - cable category (Cat.5e or Cat.6 or Cat.7)
 
 ### Output of ``dmesg`` command
 
 ````
-(paste output here)
+(paste output here, or attach as a file)
 ````
 
 ### Output of ``lsusb`` command
