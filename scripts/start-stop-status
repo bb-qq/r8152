@@ -1,6 +1,13 @@
 #!/bin/sh
 # Copyright (C) 2000-2017 Synology Inc. All rights reserved.
 
+set -eu
+
+script_root=`dirname $0`
+package_root=`realpath -m $0/../..`
+driver_name=`basename ${package_root}`
+driver_root="${SYNOPKG_PKGDEST:-${package_root}/target}/${driver_name}"
+
 is_ovs_enable ()
 {
     if [ ! -f  '/usr/syno/etc/synoovs/ovs_reg.conf' ]; then
@@ -18,76 +25,88 @@ is_ovs_enable ()
 set_interfaces()
 {
   action=$1
-  driver_name="r8152"
+  target_interface_name=${2:-}
   for interface_name in $(ls /sys/class/net)
   do
     # Skip loopback/docker interface, since it doesn have a device/driver
     # folder.
-      if [[ "$interface_name" = "lo" || "$interface_name" == "docker"* || "$interface_name" == "ovs"* || "$interface_name" == "syno"* || "$interface_name" == "sit"* ]]
+    if [[ "$interface_name" = "lo" || "$interface_name" == "docker"* || "$interface_name" == "ovs"* || "$interface_name" == "syno"* || "$interface_name" == "sit"* || "$interface_name" == "tap"* ]]
+    then
+      continue
+    fi
+
+    # Skip other interfaces if an interface was explicitly specified 
+    if [[ -n "$target_interface_name" && "$interface_name" != "$target_interface_name" ]]
+    then
+      continue
+    fi
+
+    # For all other interfaces list the device driver folder and
+    # bring interface up/down if the device driver folder links to
+    # something with the target device driver in its name.
+    driver_location=$(ls -ld /sys/class/net/$interface_name/device/driver)
+    interface_has_target_driver=false
+    if [ ! -z "$(echo "$driver_location" | grep $driver_name)" ]
+    then
+      interface_has_target_driver=true
+    fi
+    if [ $interface_has_target_driver = true ]
+    then
+      config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
+      config_file_ovs=/etc/sysconfig/network-scripts/ifcfg-ovs_$interface_name
+      config_storage_location=$package_root/etc/ifcfg-$interface_name
+      config_storage_location_ovs=$package_root/etc/ifcfg-ovs_$interface_name
+      if [ -f "$config_file" ] && [ "$action" = "down" ]
       then
-        continue
+        cp $config_file $config_storage_location
+      elif [ "$action" = "up" ] && [ -f "$config_storage_location" ]
+      then
+        cp $config_storage_location $config_file
       fi
-      # For all other interfaces list the device driver folder and
-      # bring interface up/down if the device driver folder links to
-      # something with r8152 in its name.
-      driver_location=$(ls -ld /sys/class/net/$interface_name/device/driver)
-      interface_has_r8152_driver=false
-      if [ ! -z "$(echo "$driver_location" | grep $driver_name)" ]
+      ifconfig $interface_name $action
+      if is_ovs_enable
       then
-        interface_has_r8152_driver=true
-      fi
-      if [ $interface_has_r8152_driver = true ]
-      then
-        config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
-        config_file_ovs=/etc/sysconfig/network-scripts/ifcfg-ovs_$interface_name
-        config_storage_location=$SYNOPKG_PKGDEST/ifcfg-$interface_name
-        config_storage_location_ovs=$SYNOPKG_PKGDEST/ifcfg-ovs_$interface_name
-        if [ -f "$config_file" ] && [ "$action" = "down" ]
+        if [ -f "$config_file_ovs" ] && [ "$action" = "down" ]
         then
-          cp $config_file $config_storage_location
-        elif [ "$action" = "up" ] && [ -f "$config_storage_location" ]
+          cp $config_file_ovs $config_storage_location_ovs
+        elif [ "$action" = "up" ] && [ -f "$config_storage_location_ovs" ]
         then
-          cp $config_storage_location $config_file
+          cp $config_storage_location_ovs $config_file_ovs
         fi
-        ifconfig $interface_name $action
-        if is_ovs_enable
+        if [ "$action" = "up" ]
         then
-          if [ -f "$config_file_ovs" ] && [ "$action" = "down" ]
-          then
-            cp $config_file_ovs $config_storage_location_ovs
-          elif [ "$action" = "up" ] && [ -f "$config_storage_location_ovs" ]
-          then
-            cp $config_storage_location_ovs $config_file_ovs
-          fi
-          if [ "$action" = "up" ]
-          then
-            ovs-vsctl add-br ovs_$interface_name
-            ovs-vsctl add-port ovs_$interface_name $interface_name
-            ifconfig ovs_$interface_name $action
-          fi
-          if [ "$action" = "down" ]
-          then
-            ifconfig ovs_$interface_name $action
-            ovs-vsctl del-br ovs_$interface_name
-          fi
+          ovs-vsctl add-br ovs_$interface_name
+          ovs-vsctl add-port ovs_$interface_name $interface_name
+          ifconfig ovs_$interface_name $action
         fi
-        if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
+        if ifconfig ovs_$interface_name 2> /dev/null && [ "$action" = "down" ]
         then
-          source $config_file
-          if [ "$BOOTPROTO" = "dhcp" ]
-          then
-            synonet --dhcp $interface_name
-          fi
-        fi
-        if [ "$action" = "up" ] && [ -r "$config_file_ovs" ] && is_ovs_enable
-        then
-          source $config_file_ovs
-          if [ "$BOOTPROTO" = "dhcp" ]
-          then
-            synonet --dhcp ovs_$interface_name
-          fi
+          ifconfig ovs_$interface_name $action
+          ovs-vsctl del-br ovs_$interface_name
         fi
       fi
+      if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
+      then
+        source $config_file
+        if [ "$BOOTPROTO" = "dhcp" ]
+        then
+          synonet --dhcp $interface_name
+        fi
+      fi
+      if [ "$action" = "up" ] && [ -r "$config_file_ovs" ] && is_ovs_enable
+      then
+        source $config_file_ovs
+        if [ "$BOOTPROTO" = "dhcp" ]
+        then
+          synonet --dhcp ovs_$interface_name
+        fi
+      fi
+
+      if [ "$action" = "up" ]
+      then
+        test -e ${script_root}/apply-private-flags && sh ${script_root}/apply-private-flags $interface_name
+      fi
+    fi
   done
 }
 
@@ -98,9 +117,18 @@ count_usb_interfaces()
 
 case $1 in
 	start)
-		initial_count=`count_usb_interfaces`
+    test -e ${script_root}/apply-memory-setting && sh ${script_root}/apply-memory-setting
 
-		/sbin/insmod $SYNOPKG_PKGDEST/r8152/r8152.ko
+    initial_count=`count_usb_interfaces`
+
+		test -e ${driver_root}/mii.ko    && /sbin/insmod ${driver_root}/mii.ko
+		test -e ${driver_root}/usbnet.ko && /sbin/insmod ${driver_root}/usbnet.ko
+		/sbin/insmod ${driver_root}/${driver_name}.ko
+
+    if [ -r /usr/lib/udev/rules.d/51-usb-${driver_name}-net.rules ]
+    then
+      exit 0
+    fi
 
 		for i in `seq 1 60`
 		do
@@ -116,16 +144,24 @@ case $1 in
 	;;
 	stop)
 		set_interfaces down
-		/sbin/rmmod $SYNOPKG_PKGDEST/r8152/r8152.ko
+		/sbin/rmmod ${driver_root}/${driver_name}.ko
+		test -e ${driver_root}/usbnet.ko && /sbin/rmmod ${driver_root}/usbnet.ko
+		test -e ${driver_root}/mii.ko    && /sbin/rmmod ${driver_root}/mii.ko
 		exit 0
 	;;
 	status)
-		/sbin/lsmod | grep r8152 && exit 0 || exit 3
+		/sbin/lsmod | grep ${driver_name} && exit 0 || exit 3
 	;;
 	killall)
-        ;;
+    exit 0
+  ;;
 	log)
 		exit 0
 	;;
+  reload)
+    set_interfaces down $2
+    set_interfaces up $2
+    exit 0
+  ;;
 esac
 

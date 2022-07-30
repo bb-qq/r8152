@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -eu
+
+SCRIPT=`realpath $0`
+DIRNAME=`dirname ${SCRIPT}`
+DRIVERDIR=`realpath $0/../..`
+DRIVERNAME=`basename ${DRIVERDIR}`
+ln -s ${DIRNAME}/*.rules /usr/lib/udev/rules.d/
+
+if [ ! -r /etc/udev/hwdb.bin ]
+then
+  echo Updating Hardware Database Index...
+  udevadm hwdb --update  
+fi
+
+udevadm control --reload-rules
+
+echo "UDEV rules have been installed to /usr/lib/udev/rules.d"
+find /usr/lib/udev/rules.d -type l | grep ${DIRVERNAME} | xargs ls -l

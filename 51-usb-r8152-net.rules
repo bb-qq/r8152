@@ -1,0 +1,6 @@
+ACTION!="add", GOTO="usb_r8152_net_end"
+SUBSYSTEM!="net", GOTO="usb_r8152_net_end"
+
+ENV{PHYSDEVDRIVER}=="r8152", RUN="/var/packages/r8152/scripts/start-stop-status reload $env{INTERFACE}"
+
+LABEL="usb_r8152_net_end"
