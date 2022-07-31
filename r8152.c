@@ -20242,7 +20242,8 @@ static const struct usb_device_id rtl8152_table[] = {
 
 	/* TRENDnet */
 	{REALTEK_USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b)},
-	
+	{REALTEK_USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c)},
+
 	/* LINKSYS */
 	{REALTEK_USB_DEVICE(VENDOR_ID_LINKSYS, 0x0041)},
 	
