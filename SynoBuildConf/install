@@ -29,7 +29,8 @@ create_spk(){
 	### Copy package center scripts to PKG_DIR
 	mkdir -p $scripts_dir
 	cp -av scripts/* $scripts_dir
-
+    cp -av *.rules $scripts_dir
+	
 	### Copy package conf to PKG_DIR
 	mkdir -p $conf_dir
 	cp -av conf/* $conf_dir

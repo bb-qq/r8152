@@ -4,7 +4,7 @@ set -eu
 
 SCRIPT=`realpath $0`
 DIRNAME=`dirname ${SCRIPT}`
-DRIVERDIR=`realpath $0/../..`
+DRIVERDIR=`realpath ${DIRNAME}/..`
 DRIVERNAME=`basename ${DRIVERDIR}`
 ln -s ${DIRNAME}/*.rules /usr/lib/udev/rules.d/
 
@@ -17,4 +17,4 @@ fi
 udevadm control --reload-rules
 
 echo "UDEV rules have been installed to /usr/lib/udev/rules.d"
-find /usr/lib/udev/rules.d -type l | grep ${DIRVERNAME} | xargs ls -l
+find /usr/lib/udev/rules.d -type l | grep ${DRIVERNAME} | xargs ls -l
