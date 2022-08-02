@@ -1,10 +1,10 @@
 #!/bin/sh
 # Copyright (C) 2000-2017 Synology Inc. All rights reserved.
 
-set -eu
+set -eux
 
 script_root=`dirname $0`
-package_root=`realpath -m $0/../..`
+package_root=`realpath -m ${script_root}/..`
 driver_name=`basename ${package_root}`
 driver_root="${SYNOPKG_PKGDEST:-${package_root}/target}/${driver_name}"
 
@@ -22,15 +22,64 @@ is_ovs_enable ()
     fi
 }
 
+set_ovs_interface()
+{
+  interface_name=$1
+  action=$2
+
+  config_file_ovs=/etc/sysconfig/network-scripts/ifcfg-ovs_$interface_name
+  config_storage_location_ovs=$package_root/etc/ifcfg-ovs_$interface_name
+
+  if is_ovs_enable
+  then
+    if [ -f "$config_file_ovs" ] && [ "$action" = "down" ]
+    then
+      cp $config_file_ovs $config_storage_location_ovs
+    elif [ "$action" = "up" ] && [ -f "$config_storage_location_ovs" ]
+    then
+      cp $config_storage_location_ovs $config_file_ovs
+    fi
+    if [ "$action" = "up" ]
+    then
+      ovs-vsctl add-br ovs_$interface_name
+      ovs-vsctl add-port ovs_$interface_name $interface_name
+      ifconfig ovs_$interface_name $action
+    fi
+    if ifconfig ovs_$interface_name 2> /dev/null && [ "$action" = "down" ]
+    then
+      ifconfig ovs_$interface_name $action
+      ovs-vsctl del-br ovs_$interface_name
+    fi
+
+    if [ "$action" = "up" ] && [ -r "$config_file_ovs" ]
+    then
+      source $config_file_ovs
+      if [ "$BOOTPROTO" = "dhcp" ]
+      then
+        synonet --dhcp ovs_$interface_name || true
+      fi
+    fi
+  fi
+}
+
 set_interfaces()
 {
   action=$1
   target_interface_name=${2:-}
-  for interface_name in $(ls /sys/class/net)
+  all_interface_names=$(ls /sys/class/net)
+
+  if [ -n ${target_interface_name} ] && [ ! -e "/sys/class/net/${target_interface_name}" ] && [ "$action" = "down" ]
+  then
+    echo "${target_interface_name} is already detached."
+    set_ovs_interface down ${target_interface_name}
+    return 0
+  fi
+
+  for interface_name in ${all_interface_names}
   do
     # Skip loopback/docker interface, since it doesn have a device/driver
     # folder.
-    if [[ "$interface_name" = "lo" || "$interface_name" == "docker"* || "$interface_name" == "ovs"* || "$interface_name" == "syno"* || "$interface_name" == "sit"* || "$interface_name" == "tap"* ]]
+    if [[ "$interface_name" = "lo" || "$interface_name" == "docker"* || "$interface_name" == "ovs"* || "$interface_name" == "syno"* || "$interface_name" == "sit"* || "$interface_name" == "tap"* || "$interface_name" == "tun"* ]]
     then
       continue
     fi
@@ -53,9 +102,7 @@ set_interfaces()
     if [ $interface_has_target_driver = true ]
     then
       config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
-      config_file_ovs=/etc/sysconfig/network-scripts/ifcfg-ovs_$interface_name
       config_storage_location=$package_root/etc/ifcfg-$interface_name
-      config_storage_location_ovs=$package_root/etc/ifcfg-ovs_$interface_name
       if [ -f "$config_file" ] && [ "$action" = "down" ]
       then
         cp $config_file $config_storage_location
@@ -64,47 +111,19 @@ set_interfaces()
         cp $config_storage_location $config_file
       fi
       ifconfig $interface_name $action
-      if is_ovs_enable
-      then
-        if [ -f "$config_file_ovs" ] && [ "$action" = "down" ]
-        then
-          cp $config_file_ovs $config_storage_location_ovs
-        elif [ "$action" = "up" ] && [ -f "$config_storage_location_ovs" ]
-        then
-          cp $config_storage_location_ovs $config_file_ovs
-        fi
-        if [ "$action" = "up" ]
-        then
-          ovs-vsctl add-br ovs_$interface_name
-          ovs-vsctl add-port ovs_$interface_name $interface_name
-          ifconfig ovs_$interface_name $action
-        fi
-        if ifconfig ovs_$interface_name 2> /dev/null && [ "$action" = "down" ]
-        then
-          ifconfig ovs_$interface_name $action
-          ovs-vsctl del-br ovs_$interface_name
-        fi
-      fi
+      set_ovs_interface $interface_name $action
       if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
       then
         source $config_file
         if [ "$BOOTPROTO" = "dhcp" ]
         then
-          synonet --dhcp $interface_name
-        fi
-      fi
-      if [ "$action" = "up" ] && [ -r "$config_file_ovs" ] && is_ovs_enable
-      then
-        source $config_file_ovs
-        if [ "$BOOTPROTO" = "dhcp" ]
-        then
-          synonet --dhcp ovs_$interface_name
+          synonet --dhcp $interface_name || true
         fi
       fi
 
-      if [ "$action" = "up" ]
+      if [ "$action" = "up" ] && [ -e ${script_root}/apply-private-flags ]
       then
-        test -e ${script_root}/apply-private-flags && sh ${script_root}/apply-private-flags $interface_name
+        sh ${script_root}/apply-private-flags $interface_name
       fi
     fi
   done
@@ -116,52 +135,66 @@ count_usb_interfaces()
 }
 
 case $1 in
-	start)
-    test -e ${script_root}/apply-memory-setting && sh ${script_root}/apply-memory-setting
+  start)
+    if [ -e ${script_root}/apply-memory-setting ]
+    then
+      sh ${script_root}/apply-memory-setting
+    fi
 
     initial_count=`count_usb_interfaces`
 
-		test -e ${driver_root}/mii.ko    && /sbin/insmod ${driver_root}/mii.ko
-		test -e ${driver_root}/usbnet.ko && /sbin/insmod ${driver_root}/usbnet.ko
-		/sbin/insmod ${driver_root}/${driver_name}.ko
+    if [ -e ${driver_root}/mii.ko ]
+    then
+      /sbin/insmod ${driver_root}/mii.ko
+    fi
+    if [ -e ${driver_root}/usbnet.ko ]
+    then
+      /sbin/insmod ${driver_root}/usbnet.ko
+    fi
+    /sbin/insmod ${driver_root}/${driver_name}.ko
 
     if [ -r /usr/lib/udev/rules.d/51-usb-${driver_name}-net.rules ]
     then
       exit 0
     fi
 
-		for i in `seq 1 60`
-		do
-			if [ `count_usb_interfaces` -ne $initial_count ]
-			then
-				break
-			fi
-			sleep 1
-		done
+    for i in `seq 1 60`
+    do
+      if [ `count_usb_interfaces` -ne $initial_count ]
+      then
+        break
+      fi
+      sleep 1
+    done
 
-		set_interfaces up
-		exit 0
-	;;
-	stop)
-		set_interfaces down
-		/sbin/rmmod ${driver_root}/${driver_name}.ko
-		test -e ${driver_root}/usbnet.ko && /sbin/rmmod ${driver_root}/usbnet.ko
-		test -e ${driver_root}/mii.ko    && /sbin/rmmod ${driver_root}/mii.ko
-		exit 0
-	;;
-	status)
-		/sbin/lsmod | grep ${driver_name} && exit 0 || exit 3
-	;;
-	killall)
+    set_interfaces up
     exit 0
   ;;
-	log)
-		exit 0
-	;;
+  stop)
+    set_interfaces down
+    /sbin/rmmod ${driver_root}/${driver_name}.ko
+    if [ -e ${driver_root}/usbnet.ko ]
+    then 
+      /sbin/rmmod ${driver_root}/usbnet.ko || true
+    fi
+    if [ -e ${driver_root}/mii.ko ]
+    then
+      /sbin/rmmod ${driver_root}/mii.ko    || true
+    fi
+    exit 0
+  ;;
+  status)
+    /sbin/lsmod | grep ${driver_name} && exit 0 || exit 3
+  ;;
+  killall)
+    exit 0
+  ;;
+  log)
+    exit 0
+  ;;
   reload)
     set_interfaces down $2
     set_interfaces up $2
     exit 0
   ;;
 esac
-
