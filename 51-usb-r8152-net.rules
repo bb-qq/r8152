@@ -1,6 +1,7 @@
-ACTION!="add", GOTO="usb_r8152_net_end"
 SUBSYSTEM!="net", GOTO="usb_r8152_net_end"
+ENV{PHYSDEVDRIVER}!="r8152", GOTO="usb_r8152_net_end"
 
-ENV{PHYSDEVDRIVER}=="r8152", RUN="/var/packages/r8152/scripts/start-stop-status reload $env{INTERFACE}"
+ACTION=="add",    RUN="/var/packages/r8152/scripts/start-stop-status reload $env{INTERFACE}"
+ACTION=="remove", RUN="/var/packages/r8152/scripts/start-stop-status remove $env{INTERFACE}"
 
 LABEL="usb_r8152_net_end"

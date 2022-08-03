@@ -71,7 +71,7 @@ set_interfaces()
   if [ -n ${target_interface_name} ] && [ ! -e "/sys/class/net/${target_interface_name}" ] && [ "$action" = "down" ]
   then
     echo "${target_interface_name} is already detached."
-    set_ovs_interface down ${target_interface_name}
+    set_ovs_interface ${target_interface_name} down
     return 0
   fi
 
@@ -195,6 +195,10 @@ case $1 in
   reload)
     set_interfaces down $2
     set_interfaces up $2
+    exit 0
+  ;;
+  remove)
+    set_interfaces down $2
     exit 0
   ;;
 esac
