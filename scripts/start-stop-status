@@ -77,15 +77,15 @@ set_interfaces()
 
   for interface_name in ${all_interface_names}
   do
-    # Skip loopback/docker interface, since it doesn have a device/driver
-    # folder.
-    if [[ "$interface_name" = "lo" || "$interface_name" == "docker"* || "$interface_name" == "ovs"* || "$interface_name" == "syno"* || "$interface_name" == "sit"* || "$interface_name" == "tap"* || "$interface_name" == "tun"* ]]
+    # Skip other interfaces if an interface was explicitly specified 
+    if [[ -n "$target_interface_name" && "$interface_name" != "$target_interface_name" ]]
     then
       continue
     fi
 
-    # Skip other interfaces if an interface was explicitly specified 
-    if [[ -n "$target_interface_name" && "$interface_name" != "$target_interface_name" ]]
+    # Skip loopback/docker interface, since it doesn have a device/driver
+    # folder.
+    if [ ! -e /sys/class/net/$interface_name/device/driver ]
     then
       continue
     fi
@@ -94,12 +94,7 @@ set_interfaces()
     # bring interface up/down if the device driver folder links to
     # something with the target device driver in its name.
     driver_location=$(ls -ld /sys/class/net/$interface_name/device/driver)
-    interface_has_target_driver=false
     if [ ! -z "$(echo "$driver_location" | grep $driver_name)" ]
-    then
-      interface_has_target_driver=true
-    fi
-    if [ $interface_has_target_driver = true ]
     then
       config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
       config_storage_location=$package_root/etc/ifcfg-$interface_name
@@ -172,7 +167,7 @@ case $1 in
   ;;
   stop)
     set_interfaces down
-    /sbin/rmmod ${driver_root}/${driver_name}.ko
+    /sbin/rmmod ${driver_root}/${driver_name}.ko || true
     if [ -e ${driver_root}/usbnet.ko ]
     then 
       /sbin/rmmod ${driver_root}/usbnet.ko || true
