@@ -17,7 +17,7 @@ You may also be interested in my another project [AQC111U(5Gbps) driver package 
 
 You can download drivers including other platforms from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms. If you are using such an unconfirmed models, the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) may be helpful.
 
-I very much appreciate if you report whether it works.
+I very much appreciate if you report whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
 
 ***NOTE***: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
 
