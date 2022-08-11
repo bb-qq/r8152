@@ -1,10 +1,12 @@
 # DSM driver for realtek RTL8152/RTL8153/RTL8156 based USB Ethernet adapters
 
-This is a RTL8152/RTL8153/RTL8156 driver package for Synology NASes.
+This is a RTL8152/RTL8153/RTL8156(2.5Gbps or 1.0Gbps) driver package for Synology NASes.
+
+You may also be interested in my another project [AQC111U(5Gbps) driver package for Synology NASes](https://github.com/bb-qq/aqc111).
 
 ## Supported NAS platform
 
-* DSM 7.0
+* DSM 7.x
 * apollolake based products
     * DS918+ (confirmed working)
     * DS620slim
