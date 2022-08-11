@@ -32,6 +32,9 @@ clean:
 
 .PHONY: install
 install:
+ifneq ($(shell lsmod | grep r8153_ecm),)
+	rmmod r8153_ecm
+endif
 ifneq ($(shell lsmod | grep r8152),)
 	rmmod r8152
 endif

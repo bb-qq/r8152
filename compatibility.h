@@ -8,7 +8,11 @@
 #include <linux/init.h>
 #include <linux/version.h>
 #include <linux/in.h>
-#include <acpi/acpi.h>
+#include <linux/acpi.h>
+
+#if defined(RTL8152_S5_WOL) && defined(CONFIG_PM)
+#include <linux/reboot.h>
+#endif /* defined(RTL8152_S5_WOL) && defined(CONFIG_PM) */
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 	#include <linux/mdio.h>
@@ -17,11 +21,22 @@
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0) */
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31) */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,12,0)
+	#define PHY_MAC_INTERRUPT		PHY_IGNORE_INTERRUPT
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0)
+	#ifdef CONFIG_PM
+	#define pm_ptr(_ptr) (_ptr)
+	#else
+	#define pm_ptr(_ptr) NULL
+	#endif
+
 	#define from_tasklet(var, callback_tasklet, tasklet_fieldname)	\
 		container_of((struct tasklet_struct *)callback_tasklet, typeof(*var), tasklet_fieldname)
 
 	#define tasklet_setup(t, fun)	tasklet_init(t, fun, (unsigned long)t)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,8,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,7,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0)
 	/* Iterate through singly-linked GSO fragments of an skb. */
 	#define skb_list_walk_safe(first, skb, next_skb)                               \
@@ -29,7 +44,7 @@
 		     (skb) = (next_skb), (next_skb) = (skb) ? (skb)->next : NULL)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0)
 	#ifndef __has_attribute
-	# define __GCC4_has_attribute___fallthrough__         0
+	# define __has_attribute(x)         0
 	#endif
 
 	#if __has_attribute(__fallthrough__)
@@ -38,6 +53,11 @@
 	# define fallthrough                    do {} while (0)  /* fallthrough */
 	#endif
 
+	#define MDIO_EEE_2_5GT         0x0001  /* 2.5GT EEE cap */
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,2,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,1,0)
+	#define MDIO_AN_10GBT_CTRL_ADV2_5G     0x0080  /* Advertise 2.5GBASE-T */
+	#define MDIO_AN_10GBT_STAT_LP2_5G      0x0020  /* LP is 2.5GBT capable */
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,20,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,12,0)
@@ -89,8 +109,12 @@
 	#define NETIF_F_HW_VLAN_CTAG_RX			NETIF_F_HW_VLAN_RX
 	#define NETIF_F_HW_VLAN_CTAG_TX			NETIF_F_HW_VLAN_TX
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0)
-	#define USB_DEVICE_INTERFACE_CLASS(vend, prod, iclass) \
-		USB_DEVICE_AND_INTERFACE_INFO(vend, prod, iclass, 0xff, 0)
+	#define USB_DEVICE_INTERFACE_CLASS(vend, prod, cl) \
+		.match_flags = USB_DEVICE_ID_MATCH_DEVICE | \
+			       USB_DEVICE_ID_MATCH_INT_CLASS, \
+		.idVendor = (vend), \
+		.idProduct = (prod), \
+		.bInterfaceClass = (cl)
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
 	#ifndef SPEED_UNKNOWN
@@ -515,10 +539,21 @@
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,19,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,0,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0) */
+	static inline int eth_platform_get_mac_address(struct device *dev, u8 *mac_addr)
+	{
+		return -EOPNOTSUPP;
+	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,5,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,9,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,10,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,12,0) */
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,19,10) && \
+    !(LINUX_VERSION_CODE >= KERNEL_VERSION(4,14,217) && LINUX_VERSION_CODE < KERNEL_VERSION(4,15,0))
+	static inline void skb_mark_not_on_list(struct sk_buff *skb)
+	{
+		skb->next = NULL;
+	}
+#endif
 	static inline void linkmode_set_bit(int nr, volatile unsigned long *addr)
 	{
 		__set_bit(nr, addr);
@@ -543,15 +578,41 @@
 		else
 			linkmode_clear_bit(nr, addr);
 	}
-
-	static inline void skb_mark_not_on_list(struct sk_buff *skb)
-	{
-		skb->next = NULL;
-	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,1,0) */
+//	static inline u16 pci_dev_id(struct pci_dev *dev)
+//	{
+//		return PCI_DEVID(dev->bus->number, dev->devfn);
+//	}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,2,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0) */
+	static inline void tcp_v6_gso_csum_prep(struct sk_buff *skb)
+	{
+		struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+		struct tcphdr *th = tcp_hdr(skb);
+
+		ipv6h->payload_len = 0;
+		th->check = ~tcp_v6_check(0, &ipv6h->saddr, &ipv6h->daddr, 0);
+	}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,7,0) */
+	static inline void fsleep(unsigned long usecs)
+	{
+		if (usecs <= 10)
+			udelay(usecs);
+		else if (usecs <= 20000)
+			usleep_range(usecs, 2 * usecs);
+		else
+			msleep(DIV_ROUND_UP(usecs, 1000));
+	}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,8,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,9,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,12,0) */
+	static inline void eth_hw_addr_set(struct net_device *dev, const u8 *addr)
+	{
+		memcpy(dev->dev_addr, addr, 6);
+	}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,15,0) */
 
 #ifndef FALSE
 	#define TRUE	1
