@@ -32,4 +32,3 @@ clean:
 install: $(TARGET) spk_su
 	mkdir -p $(DESTDIR)/r8152/
 	install $(^) $(DESTDIR)/r8152/
-
