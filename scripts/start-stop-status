@@ -41,22 +41,29 @@ set_ovs_interface()
     fi
     if [ "$action" = "up" ]
     then
-      ovs-vsctl add-br ovs_$interface_name
-      ovs-vsctl add-port ovs_$interface_name $interface_name
-      ifconfig ovs_$interface_name $action
-    fi
-    if ifconfig ovs_$interface_name 2> /dev/null && [ "$action" = "down" ]
-    then
-      ifconfig ovs_$interface_name $action
-      ovs-vsctl del-br ovs_$interface_name
+      if ! ovs-vsctl show | grep "Interface \"$interface_name\""
+      then
+        ovs-vsctl add-br ovs_$interface_name
+        ovs-vsctl add-port ovs_$interface_name $interface_name
+        ifconfig ovs_$interface_name $action
+      fi
     fi
 
-    if [ "$action" = "up" ] && [ -r "$config_file_ovs" ]
+    if ifconfig ovs_$interface_name 2> /dev/null
     then
-      source $config_file_ovs
-      if [ "$BOOTPROTO" = "dhcp" ]
+      if [ "$action" = "down" ]
       then
-        synonet --dhcp ovs_$interface_name || true
+        ifconfig ovs_$interface_name $action
+        ovs-vsctl del-br ovs_$interface_name
+      fi
+
+      if [ "$action" = "up" ] && [ -r "$config_file_ovs" ]
+      then
+        source $config_file_ovs
+        if [ "$BOOTPROTO" = "dhcp" ]
+        then
+          synonet --dhcp ovs_$interface_name || true
+        fi
       fi
     fi
   fi
