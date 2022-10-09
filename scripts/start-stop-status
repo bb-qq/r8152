@@ -9,6 +9,22 @@ driver_name=`basename ${package_root}`
 driver_root="${SYNOPKG_PKGDEST:-${package_root}/target}/${driver_name}"
 log_root="${package_root}/var/log"
 
+apply_if_config()
+{
+  target_interface_name=$1
+  if [ "$BOOTPROTO" = "dhcp" ]
+  then
+    synonet --dhcp $target_interface_name || true
+  else
+    # workaround: From build 42962 and later, IP settings must be explicitly configured.
+    source /etc/VERSION
+    if [ $buildnumber -ge 42962 ]
+    then
+      ifconfig $target_interface_name inet ${IPADDR} netmask ${NETMASK}
+    fi
+  fi
+}
+
 is_ovs_enable ()
 {
     if [ ! -f  '/usr/syno/etc/synoovs/ovs_reg.conf' ]; then
@@ -61,10 +77,7 @@ set_ovs_interface()
       if [ "$action" = "up" ] && [ -r "$config_file_ovs" ]
       then
         source $config_file_ovs
-        if [ "$BOOTPROTO" = "dhcp" ]
-        then
-          synonet --dhcp ovs_$interface_name || true
-        fi
+        apply_if_config ovs_$interface_name
       fi
     fi
   fi
@@ -118,10 +131,7 @@ set_interfaces()
       if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
       then
         source $config_file
-        if [ "$BOOTPROTO" = "dhcp" ]
-        then
-          synonet --dhcp $interface_name || true
-        fi
+        apply_if_config $interface_name
       fi
 
       if [ "$action" = "up" ] && [ -e ${script_root}/apply-private-flags ]
