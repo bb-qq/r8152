@@ -151,6 +151,11 @@ case $1 in
       sh ${script_root}/apply-memory-setting
     fi
 
+    if [ -w /sys/module/usbcore/parameters/autosuspend ]
+    then
+      echo -1 > /sys/module/usbcore/parameters/autosuspend
+    fi
+
     initial_count=`count_usb_interfaces`
 
     if [ -e ${driver_root}/mii.ko ]
