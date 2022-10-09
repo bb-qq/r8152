@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright (C) 2000-2017 Synology Inc. All rights reserved.
 
 set -eux
@@ -7,6 +7,7 @@ script_root=`dirname $0`
 package_root=`realpath -m ${script_root}/..`
 driver_name=`basename ${package_root}`
 driver_root="${SYNOPKG_PKGDEST:-${package_root}/target}/${driver_name}"
+log_root="${package_root}/var/log"
 
 is_ovs_enable ()
 {
@@ -135,6 +136,13 @@ count_usb_interfaces()
 {
   ls -l /sys/class/net/ | grep /usb | wc -l
 }
+
+mkdir -p "${log_root}"
+exec &> >(tee -a "${log_root}/start-stop-status.log")
+echo "----------"
+date
+grep -E '^(version|create_time)' ${package_root}/INFO
+echo $*
 
 case $1 in
   start)
