@@ -18,9 +18,29 @@ apply_if_config()
   else
     # workaround: From build 42962 and later, IP settings must be explicitly configured.
     source /etc/VERSION
-    if [ $buildnumber -ge 42962 ]
+    if [ $buildnumber -ge 42962 ] && [[ -v IPADDR && -v NETMASK ]]
     then
       ifconfig $target_interface_name inet ${IPADDR} netmask ${NETMASK}
+      netstat -nr
+
+      if ! ip route | grep -E ^default
+      then
+        default_gateway_interface=`get_key_value /etc/iproute2/config/default-gateway DEVICE` || true
+        # The value of `default-gateway ` may be empty when default gateway was set to a removable device.
+        if [ "${default_gateway_interface}" = "${target_interface_name}" ] || [ -z "${default_gateway_interface}" ]
+        then
+          gateway=`get_section_key_value /etc/iproute2/config/gateway_database ${target_interface_name} gateway`
+          if [ -n "${gateway}" ]
+          then
+            route add default gw ${gateway}
+            netstat -nr
+            if [ -z "${default_gateway_interface}" ]
+            then
+              echo "DEVICE=${target_interface_name}" > /etc/iproute2/config/default-gateway
+            fi
+          fi
+        fi
+      fi
     fi
   fi
 }
