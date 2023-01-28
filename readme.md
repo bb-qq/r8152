@@ -53,6 +53,8 @@ If you got other products not listed and they do not work, please create a issue
 
 https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
+*Warning*: Do not use Safari for this operation.
+
 ## How to configure
 
 You can configure the IP addresses and MTU of the added NICs from the DSM UI in the same way as the built-in NICs.
