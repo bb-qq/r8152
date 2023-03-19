@@ -12,7 +12,7 @@ log_root="${package_root}/var/log"
 apply_if_config()
 {
   target_interface_name=$1
-  if [ "$BOOTPROTO" = "dhcp" ]
+  if [[ ! -v BOOTPROTO ]] || [ "$BOOTPROTO" = "dhcp" ]
   then
     synonet --dhcp $target_interface_name || true
   else
@@ -45,7 +45,7 @@ apply_if_config()
   fi
 }
 
-is_ovs_enable ()
+is_ovs_enable()
 {
     if [ ! -f  '/usr/syno/etc/synoovs/ovs_reg.conf' ]; then
         return 1
@@ -94,9 +94,12 @@ set_ovs_interface()
         ovs-vsctl del-br ovs_$interface_name
       fi
 
-      if [ "$action" = "up" ] && [ -r "$config_file_ovs" ]
+      if [ "$action" = "up" ]
       then
-        source $config_file_ovs
+        if [ -r "$config_file_ovs" ]
+        then
+          source $config_file_ovs
+        fi
         apply_if_config ovs_$interface_name
       fi
     fi
@@ -148,9 +151,12 @@ set_interfaces()
       fi
       ifconfig $interface_name $action
       set_ovs_interface $interface_name $action
-      if [ "$action" = "up" ] && [ -r "$config_file" ] && ! is_ovs_enable
+      if [ "$action" = "up" ] && ! is_ovs_enable
       then
-        source $config_file
+        if [ -r "$config_file" ]
+        then
+          source $config_file
+        fi
         apply_if_config $interface_name
       fi
 
