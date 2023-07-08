@@ -39,3 +39,20 @@
 
 	Changes the number of ring entries for the Rx ring.
 	# ethtool -G eth0 rx 100
+
+- Tunable parameters
+
+	Get the current rx copybreak value in bytes.
+	# ethtool --get-tunable eth0 rx-copybreak
+
+	Set the rx copybreak value in bytes.
+	# ethtool --set-tunable eth0 rx-copybreak 256
+
+- Flow control
+
+	Queries the specified Ethernet device for pause parameter information.
+	# ethtool -a eth0
+
+	Changes the pause parameters of the specified Ethernet device.
+	# ethtool -A eth0 rx off tx off (Disable flow control)
+	# ethtool -A eth0 rx on tx off (Enable flow control)
