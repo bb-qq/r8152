@@ -46,7 +46,10 @@ I very much appreciate it if you could report whether it works. If you have any 
 * [biaze KZ13](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) (Type-A, only in China)
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
-If you have other products not listed and they do not work, please create an issue with the output of lsusb.
+* If you have other products not listed and they do not work, please create an issue with the output of lsusb.
+* If you are using a product with a Type-C connector, you will need a connector or cable to convert it to Type-A.
+  * For stable device operation, I recommend using a USB 3.2gen2 10Gbps compatible cable.
+  * A 5Gbps cable is sufficient for this driver to work, but a 10Gbps capable cable can be expected to have higher transmission quality.
 
 ## How to install
 
