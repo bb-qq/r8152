@@ -1,6 +1,6 @@
 # DSM driver for realtek RTL8152/RTL8153/RTL8156 based USB Ethernet adapters
 
-This is a RTL8152/RTL8153/RTL8156(2.5Gbps or 1.0Gbps) driver package for Synology NASes.
+This is an RTL8152/RTL8153/RTL8156(2.5Gbps or 1.0Gbps) driver package for Synology NASes.
 
 You may also be interested in my other projects:
 * [AQC111U(5Gbps ethernet) driver package for Synology NASes](https://github.com/bb-qq/aqc111)
@@ -17,26 +17,34 @@ You may also be interested in my other projects:
     * DS418play
     * DS218+
 
-You can download drivers including other platforms from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms. If you are using such an unconfirmed models, the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) may be helpful.
+You can download drivers including other platforms from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms. If you are using such unconfirmed models, the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) may be helpful.
 
-I very much appreciate if you report whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
+I very much appreciate it if you could report whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
 
 ***NOTE***: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
 
 ## Supported RTL8156(2.5Gbps) based devices
 
-* [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (Type-C)
+**INFO**: Products using **RTL8156BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
+
+* [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (RTL8156/Type-C to A)
   * NOTE: The included Type A-C conversion adapter is directional. There's a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
-* [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (Type-A, Japan only)
-* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (Type-A, Japan only)
-* [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (Type-A,)
-* [TRENDnet TUC-ET2G](https://amzn.to/2PLmR5v) (Type-C)
-* [CableCreation 2.5G Ethernet to USB Adapter](https://amzn.to/39yfZyj) (Type-A)
-* [UGREEN USB C to 2.5G Ethernet Adapter](https://amzn.to/3fzXmfE) (Type-C)
-* biaze KZ13 (Type-A, confirmed working)
+* [ASUSTOR AS-U2.5G2](https://amzn.to/3u5wUH4) (RTL8156B/Type-C to A)
+  * NOTE: Same above.
+* [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (RTL8156/Type-A, Japan only)
+* [Plannex USB-LAN2500R2](https://amzn.to/47c14GU) (RTL8156BG/Type-A, Japan only)
+* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, Japan only)
+* [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (RTL8156/Type-A)
+* [TRENDnet TUC-ET2G](https://amzn.to/2PLmR5v) (RTL8156(V1.0)/RTL8156BG(V2.0)/Type-C)
+* [ASUS USB-C2500](https://amzn.to/45TS6Nv) (RTL8156B/Type-A)
+* [CableCreation 2.5G Ethernet to USB Adapter](https://amzn.to/39yfZyj) (RTL8156/Type-A)
+* [UGREEN USB C to 2.5G Ethernet Adapter (2019)](https://amzn.to/3fzXmfE) (RTL8156/Type-C)
+* [UGREEN USB C to Ethernet Adapter 2.5G (2023)](https://amzn.to/3QHSElc) (RTL8156BG/Type-C)
+* [Anker USB C to 2.5 Gbps Ethernet Adapter](https://amzn.to/3QK7qrZ) (RTL8156/Type-C)
+* biaze KZ13 (Type-A)
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
-If you got other products not listed and they do not work, please create a issue with the output of lsusb.
+If you have other products not listed and they do not work, please create an issue with the output of lsusb.
 
 ## How to install
 
@@ -48,11 +56,11 @@ If you got other products not listed and they do not work, please create a issue
 
 1. Go to "Package Center"
 2. Press "Manual Install"
-3. Chose a driver package downloaded from the [release page](https://github.com/bb-qq/r8152/releases).
+3. Choose a driver package downloaded from the [release page](https://github.com/bb-qq/r8152/releases).
 4. [DSM7] The installation will fail the first time. After that, run the following command from the SSH terminal:
    * `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
 5. [DSM7] Retry installation. 
-   * You don't need above DSM7 specific steps at the next time.
+   * You don't need the above DSM7 specific steps at the next time.
 6. Reboot your NAS.
    * This procedure is not usually necessary, but many have reported that a reboot was necessary, so please reboot just in case.
 
