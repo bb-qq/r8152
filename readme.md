@@ -2,7 +2,9 @@
 
 This is a RTL8152/RTL8153/RTL8156(2.5Gbps or 1.0Gbps) driver package for Synology NASes.
 
-You may also be interested in my another project [AQC111U(5Gbps) driver package for Synology NASes](https://github.com/bb-qq/aqc111).
+You may also be interested in my other projects:
+* [AQC111U(5Gbps ethernet) driver package for Synology NASes](https://github.com/bb-qq/aqc111)
+* [UASP(USB Attached SCSI Protocol for external storage devices) driver package for Synology NASes](https://github.com/bb-qq/uas)
 
 ## Supported NAS platform
 
