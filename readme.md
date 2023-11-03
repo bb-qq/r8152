@@ -31,17 +31,19 @@ I very much appreciate it if you could report whether it works. If you have any 
   * NOTE: The included Type A-C conversion adapter is directional. There's a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
 * [ASUSTOR AS-U2.5G2](https://amzn.to/3u5wUH4) (RTL8156B/Type-C to A)
   * NOTE: Same above.
-* [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (RTL8156/Type-A, Japan only)
-* [Plannex USB-LAN2500R2](https://amzn.to/47c14GU) (RTL8156BG/Type-A, Japan only)
-* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, Japan only)
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (RTL8156/Type-A)
 * [TRENDnet TUC-ET2G](https://amzn.to/2PLmR5v) (RTL8156(V1.0)/RTL8156BG(V2.0)/Type-C)
+  * NOTE: Customer support states that RTL8156BG was adopted in V2.0. However, there is no way to distinguish V1.0 from V2.0. Can we expect the new ones to be v2.0? 
 * [ASUS USB-C2500](https://amzn.to/45TS6Nv) (RTL8156B/Type-A)
 * [CableCreation 2.5G Ethernet to USB Adapter](https://amzn.to/39yfZyj) (RTL8156/Type-A)
 * [UGREEN USB C to 2.5G Ethernet Adapter (2019)](https://amzn.to/3fzXmfE) (RTL8156/Type-C)
 * [UGREEN USB C to Ethernet Adapter 2.5G (2023)](https://amzn.to/3QHSElc) (RTL8156BG/Type-C)
 * [Anker USB C to 2.5 Gbps Ethernet Adapter](https://amzn.to/3QK7qrZ) (RTL8156/Type-C)
-* biaze KZ13 (Type-A)
+* [StarTech.com US2GC30](https://amzn.to/46XTsYX) (RTL8156BG/Type-C)
+* [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (RTL8156/Type-A, only in Japan.)
+* [Plannex USB-LAN2500R2](https://amzn.to/47c14GU) (RTL8156BG/Type-A, only in Japan.)
+* [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, only in Japan.)
+* [biaze KZ13](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) (Type-A, only in China)
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
 If you have other products not listed and they do not work, please create an issue with the output of lsusb.
@@ -60,7 +62,7 @@ If you have other products not listed and they do not work, please create an iss
 4. [DSM7] The installation will fail the first time. After that, run the following command from the SSH terminal:
    * `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
 5. [DSM7] Retry installation. 
-   * You don't need the above DSM7 specific steps at the next time.
+   * You don't need the above DSM7-specific steps at the next time.
 6. Reboot your NAS.
    * This procedure is not usually necessary, but many have reported that a reboot was necessary, so please reboot just in case.
 
