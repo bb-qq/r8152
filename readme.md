@@ -8,20 +8,34 @@ You may also be interested in my other projects:
 
 ## Supported NAS platform
 
-* DSM 7.x
-* apollolake based products
-    * DS918+ (confirmed working)
-    * DS620slim
-    * DS1019+
-    * DS718+
-    * DS418play
-    * DS218+
+* DSM 7.x and 6.2
+* Almost all models released after 2017
+  * Older models also work, but you may not have enough performance.
+  * [Compatibility reports](https://github.com/bb-qq/r8152/wiki/Compatibility) by the community will help you.
 
-You can download drivers including other platforms from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), but you might encounter some issues with unconfirmed platforms. If you are using such unconfirmed models, the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) may be helpful.
+You can download drivers from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), 
 
 I very much appreciate it if you could report whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
 
 ***NOTE***: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
+
+### Author's environment
+
+The author uses the following environments daily and has confirmed that they work stably.
+
+* NAS
+  * DS918+ (apollolake) with 16GB RAM
+  * DSM 7.2-64570 Update 3
+  * Ethernet dongle
+    * USB-LAN2500R2 (RTL8156BG, only in Japan.)
+* PC
+  * Ethernet card
+    * [AQN-107](https://amzn.to/3RNLg7u) (discontinued, but almost equivalent to [ASUS XG-C100C](https://amzn.to/3fPJUX3))
+  * Windows10 SMB3
+* Network switches
+  * main: [QNAP QSW-2104-2T](https://amzn.to/3Sam3W0) (Broadcom `BCM53161`: x3 2.5Gbe / x2 10Gbe)
+  * sub: [keepLINK 5 Port 2.5G Switch](https://amzn.to/41PHpv6) (Realtek `RTL8372`: x5 2.5Gbe / x1 10G SFP+)
+    * If you are looking for an affordable 2.5Gbe switch, I recommend products using the RTL837x family, which is a newer generation of chips and consumes less power. Many other products are available from many vendors.
 
 ## Supported RTL8156(2.5Gbps) based devices
 
