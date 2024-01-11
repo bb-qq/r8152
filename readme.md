@@ -39,7 +39,7 @@ The author uses the following environments daily and has confirmed that they wor
 
 ## Supported RTL8156(2.5Gbps) based devices
 
-**INFO**: Products using **RTL8156BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
+**INFO**: Products using RTL8156**BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
 
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (RTL8156/Type-C to A)
   * NOTE: The included Type A-C conversion adapter is directional. There's a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
@@ -58,6 +58,7 @@ The author uses the following environments daily and has confirmed that they wor
 * [Plannex USB-LAN2500R2](https://amzn.to/47c14GU) (RTL8156BG/Type-A, only in Japan.)
 * [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, only in Japan.)
 * [biaze KZ13](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) (Type-A, only in China)
+* [ULT-WIIQ USB 2.5G Ethernet Adapter](https://amzn.to/3HfEW3G) (RTL8156B/Type-A, only in Europe?)
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
 * If you have other products not listed and they do not work, please create an issue with the output of lsusb.
