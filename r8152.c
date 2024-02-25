@@ -41,10 +41,12 @@
 			"following patents:\n" \
 			"\t\tUS6,570,884, US6,115,776, and US6,327,625.\n"
 
+#if 0
 #ifndef __x86_64
 #define FORCE_OVERRIDE_RXBUF_SZ 8192
 #else
 #define FORCE_OVERRIDE_RXBUF_SZ 16384
+#endif
 #endif
 
 #define R8152_PHY_ID		32
