@@ -43,4 +43,7 @@ ATTR{idVendor}=="0955", ATTR{idProduct}=="09ff", ATTR{bConfigurationValue}!="$en
 # LINKSYS
 ATTR{idVendor}=="13b1", ATTR{idProduct}=="0041", ATTR{bConfigurationValue}!="$env{REALTEK_MODE1}", ATTR{bConfigurationValue}="$env{REALTEK_MODE1}"
 
+# Dell
+ATTRS{idVendor}=="413c", ATTRS{idProduct}=="b097", ATTR{bConfigurationValue}!="$env{REALTEK_MODE1}", ATTR{bConfigurationValue}="$env{REALTEK_MODE1}"
+
 LABEL="usb_realtek_net_end"
