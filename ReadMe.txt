@@ -24,6 +24,9 @@
 	2.5G for kernel v4.10 and later
 	# ethtool -s eth0 autoneg on advertise 0x80000000002f
 
+	5G for kernel v4.10 and later (Couldn't be supported before kernel v4.10)
+	# ethtool -s eth0 autoneg on advertise 0x180000000002f
+
 	# ethtool -s eth0 autoneg on advertise 0x002f (1G)
 	# ethtool -s eth0 autoneg on advertise 0x000f (100M full)
 	# ethtool -s eth0 autoneg on advertise 0x0003 (10M full)

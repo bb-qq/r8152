@@ -8,8 +8,16 @@ ifneq ($(KERNELRELEASE),)
 	obj-m	 := r8152.o
 #	EXTRA_CFLAGS += -DRTL8152_S5_WOL
 #	EXTRA_CFLAGS += -DRTL8152_DEBUG
+
 	ifneq (,$(filter OFF off, $(CONFIG_CTAP_SHORT)))
 		EXTRA_CFLAGS += -DCONFIG_CTAP_SHORT_OFF
+	endif
+
+	ifeq (TRUE, $(shell test $(VERSION) -lt 5 && echo "TRUE" || \
+		test $(VERSION) -eq 5 && test $(PATCHLEVEL) -lt 12 && echo "TRUE"))
+		EXTRA_CFLAGS += -DLINUX_VERSION_MAJOR=$(VERSION)
+		EXTRA_CFLAGS += -DLINUX_VERSION_PATCHLEVEL=$(PATCHLEVEL)
+		EXTRA_CFLAGS += -DLINUX_VERSION_SUBLEVEL=$(SUBLEVEL)
 	endif
 else
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
