@@ -57,7 +57,7 @@ The author uses the following environments daily and it has confirmed that these
 * [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (RTL8156/Type-A, only in Japan.)
 * [Plannex USB-LAN2500R2](https://amzn.to/47c14GU) (RTL8156BG/Type-A, only in Japan.)
 * [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, only in Japan.)
-* [biaze KZ13](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) (Type-A, only in China)
+* biaze KZ13 [link1](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) [link2](https://digitalzakka.com/product/biaze-kz13-2-5g-usb-external-network-adapter-rj45-converter-hub-gigabit-wired-network-card/) (Type-A, only in China)
 * [ULT-WIIQ USB 2.5G Ethernet Adapter](https://amzn.to/3HfEW3G) (RTL8156B/Type-A, only in Europe?)
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
