@@ -25775,6 +25775,9 @@ static const struct usb_device_id rtl8152_table[] = {
 	/* ASUSTek */
 	REALTEK_USB_DEVICE(0x0b05, 0x1976),
 
+	/* DELL */
+	REALTEK_USB_DEVICE(0x413c, 0xb097),
+
 	{}
 };
 
