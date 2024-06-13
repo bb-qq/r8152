@@ -15,13 +15,13 @@ You may also be interested in my other projects:
 
 You can download drivers from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), 
 
-I very much appreciate it if you could report whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
+I would appreciate it if you could report whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
 
 ***NOTE***: I recommend using front ports to connect devices because some users reported stability issues when they use rear ports.
 
 ### Author's environment
 
-The author uses the following environments daily and has confirmed that they work stably.
+The author uses the following environments daily and it has confirmed that these devices work stably.
 
 * NAS
   * DS918+ (apollolake) with 16GB RAM
@@ -42,7 +42,7 @@ The author uses the following environments daily and has confirmed that they wor
 **INFO**: Products using RTL8156**BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
 
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (RTL8156/Type-C to A)
-  * NOTE: The included Type A-C conversion adapter is directional. There's a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
+  * NOTE: The included Type A-C conversion adapter is directional. There is a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
 * [ASUSTOR AS-U2.5G2](https://amzn.to/3u5wUH4) (RTL8156B/Type-C to A)
   * NOTE: Same above.
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (RTL8156/Type-A)
@@ -61,7 +61,7 @@ The author uses the following environments daily and has confirmed that they wor
 * [ULT-WIIQ USB 2.5G Ethernet Adapter](https://amzn.to/3HfEW3G) (RTL8156B/Type-A, only in Europe?)
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
-* If you have other products not listed and they do not work, please create an issue with the output of lsusb.
+* If you have other products not listed and it does not work, please create an issue with the output of lsusb.
 * If you are using a product with a Type-C connector, you will need a connector or cable to convert it to Type-A.
   * For stable device operation, I recommend using a USB 3.2gen2 10Gbps compatible cable.
   * A 5Gbps cable is sufficient for this driver to work, but a 10Gbps capable cable can be expected to have higher transmission quality.
@@ -70,7 +70,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 
 ### Preparation
 
-[Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and login your NAS.
+[Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and login to your NAS.
 
 ### Installation
 
@@ -83,6 +83,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
    * You don't need the above DSM7-specific steps at the next time.
 6. Reboot your NAS.
    * This procedure is not usually necessary, but many have reported that a reboot was necessary, so please reboot just in case.
+7. Open the driver package from the Package Center and start the driver manually.
 
 https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
