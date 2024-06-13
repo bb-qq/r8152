@@ -597,6 +597,7 @@
 		return csum_ipv6_magic(saddr, daddr, len, IPPROTO_TCP, base);
 	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0) */
+#define NAPI_POLL_WEIGHT 64
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0) */
 	static inline bool usb_device_no_sg_constraint(struct usb_device *udev)
