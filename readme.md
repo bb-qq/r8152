@@ -66,6 +66,9 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
   * For stable device operation, I recommend using a USB 3.2gen2 10Gbps compatible cable.
   * A 5Gbps cable is sufficient for this driver to work, but a 10Gbps capable cable can be expected to have higher transmission quality.
 
+## Supported RTL8157(5Gbps) based devices
+* [WisdPi USB 3.2 5Gbps Ethernet Adapter WP-UT5](https://www.amazon.com/dp/B0DF2TTT9H) (RTL8157/Type-C&A TO C)
+  
 ## How to install
 
 ### Preparation
