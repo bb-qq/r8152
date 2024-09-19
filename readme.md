@@ -92,6 +92,7 @@ If you find other products, I would appreciate it if you could let me know.
 3. Choose a driver package downloaded from the [release page](https://github.com/bb-qq/r8152/releases).
 4. [DSM7] The installation will fail the first time. After that, run the following command from the SSH terminal:
    * `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
+   * `sudo chmod a+rx /opt /opt/sbin`
 5. [DSM7] Retry installation. 
    * You don't need the above DSM7-specific steps at the next time.
 6. Reboot your NAS.
