@@ -40,6 +40,7 @@ The author uses the following environments daily and it has confirmed that these
   * main: [QNAP QSW-2104-2T](https://amzn.to/3Sam3W0) (Broadcom `BCM53161`: x3 2.5Gbe / x2 10Gbe)
   * sub: [keepLINK 5 Port 2.5G Switch](https://amzn.to/41PHpv6) (Realtek `RTL8372`: x5 2.5Gbe / x1 10G SFP+)
     * If you are looking for an affordable 2.5Gbe switch, I recommend products using the RTL837x family, which is a newer generation of chips and consumes less power. Many other products are available from many vendors.
+  * cable: [Ubiquiti Networks UC-PATCH Cat6 Cable](https://amzn.to/3Xyybla)
 
 ## Supported devices
 
@@ -49,7 +50,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 * If you use a product with a Type-C connector, you will need a connector or cable to convert it to Type-A.
   * For stable device operation, I recommend using a USB 3.2gen2 10Gbps compatible cable.
   * A 5Gbps cable is sufficient for this driver to work, but a 10Gbps capable cable can be expected to have higher transmission quality.
-  * 
+  
 ### RTL8156(2.5Gbps) based devices
 
 **INFO**: Products using RTL8156**BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
