@@ -27,6 +27,8 @@ I would appreciate it if you could let me know whether it works. If you have any
 
 The author uses the following environments daily and it has confirmed that these devices work stably.
 
+*Disclaimer*: The following product links are affiliate links. If you purchase them, I might earn a small commission at no extra cost to you.
+
 * NAS
   * DS918+ (apollolake) with 16GB RAM
   * DSM 7.2-64570 Update 3
@@ -50,7 +52,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 * If you use a product with a Type-C connector, you will need a connector or cable to convert it to Type-A.
   * For stable device operation, I recommend using a USB 3.2gen2 10Gbps compatible cable.
   * A 5Gbps cable is sufficient for this driver to work, but a 10Gbps capable cable can be expected to have higher transmission quality.
-  
+
 ### RTL8156(2.5Gbps) based devices
 
 **INFO**: Products using RTL8156**BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
@@ -71,14 +73,14 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 * [Plannex USB-LAN2500R](https://amzn.to/2ZISyAb) (RTL8156/Type-A, only in Japan.)
 * [Plannex USB-LAN2500R2](https://amzn.to/47c14GU) (RTL8156BG/Type-A, only in Japan.)
 * [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, only in Japan.)
-* biaze KZ13 [link1](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) [link2](https://digitalzakka.com/product/biaze-kz13-2-5g-usb-external-network-adapter-rj45-converter-hub-gigabit-wired-network-card/) (Type-A, only in China)
+* biaze KZ13 \[ [link1](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) [link2](https://digitalzakka.com/product/biaze-kz13-2-5g-usb-external-network-adapter-rj45-converter-hub-gigabit-wired-network-card/) \] (Type-A, only in China)
 * [ULT-WIIQ USB 2.5G Ethernet Adapter](https://amzn.to/3HfEW3G) (RTL8156B/Type-A, only in Europe?)
 
 ### RTL8157(5Gbps) based devices
 
 If you find other products, I would appreciate it if you could let me know.
 
-* [WisdPi WP-UT5](https://amzn.to/3TA3RWh) (RTL8157/Type-A and C)
+* WisdPi WP-UT5 \[ [Amazon](https://amzn.to/3TA3RWh) [AliExpress](https://s.click.aliexpress.com/e/_DDQpNWZ) \] (RTL8157/Type-A and C)
 
 ## How to install
 
