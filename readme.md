@@ -81,6 +81,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 If you find other products, I would appreciate it if you could let me know.
 
 * WisdPi WP-UT5 \[ [Amazon](https://amzn.to/3TA3RWh) [AliExpress](https://s.click.aliexpress.com/e/_DDQpNWZ) \] (RTL8157/Type-A and C)
+* [WAVLINK/WiNSTARS WS-NWU340G](https://amzn.to/3MVG5QF) (RTL8157/Type-C, report needed)
 
 ## How to install
 
