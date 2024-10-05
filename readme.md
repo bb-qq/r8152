@@ -10,6 +10,12 @@ You may also be interested in my other projects:
 * [AQC111U(5Gbps ethernet) driver package for Synology NASes](https://github.com/bb-qq/aqc111)
 * [UASP(USB Attached SCSI Protocol for external storage devices) driver package for Synology NASes](https://github.com/bb-qq/uas)
 
+## ⚠️**WARNING**
+
+It has been confirmed that this driver has been modified and reprinted on other sites.
+
+Since this driver works with root privileges, **DO NOT USE IT OBTAINED FROM OTHER SITES**.
+
 ## Supported NAS platform
 
 * DSM 7.x and 6.2
