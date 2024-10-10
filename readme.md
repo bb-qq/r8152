@@ -81,6 +81,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 * [Buffalo LUA-U3-A2G](https://amzn.to/36kGQf9) (RTL8156/Type-A, only in Japan.)
 * biaze KZ13 \[ [link1](https://alexnld.com/product/biaze-kz13-usb-external-2-5g-network-adapter-usb-to-rj45-converter-rj45-network-port-hub-usb-gigabit-wired-network-card-for-macbook-surface-lenovo-asus-computers/) [link2](https://digitalzakka.com/product/biaze-kz13-2-5g-usb-external-network-adapter-rj45-converter-hub-gigabit-wired-network-card/) \] (Type-A, only in China)
 * [ULT-WIIQ USB 2.5G Ethernet Adapter](https://amzn.to/3HfEW3G) (RTL8156B/Type-A, only in Europe?)
+* [NoName RTL8156 2.5G Ethernet Adapter](https://aliexpress.com/item/1005007268377293.html) (RTL8156/Type-A and C, only in China)
 
 ### RTL8157(5Gbps) based devices
 
