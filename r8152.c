@@ -24157,6 +24157,8 @@ static int rtl8152_change_mtu(struct net_device *dev, int new_mtu)
 	case RTL_VER_12:
 	case RTL_VER_13:
 	case RTL_VER_15:
+	case RTL_VER_16:
+	case RTL_VER_17:
 		max_mtu = size_to_mtu(16 * 1024);
 		break;
 	case RTL_VER_01:
@@ -25534,6 +25536,8 @@ static int rtl8152_probe(struct usb_interface *intf,
 	case RTL_VER_12:
 	case RTL_VER_13:
 	case RTL_VER_15:
+	case RTL_VER_16:
+	case RTL_VER_17:
 		netdev->max_mtu = size_to_mtu(16 * 1024);
 		break;
 	case RTL_VER_01:
