@@ -87,7 +87,11 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 If you find other products, I would appreciate it if you could let me know.
 
 * WisdPi WP-UT5 \[ [Amazon](https://amzn.to/3TA3RWh) [AliExpress](https://s.click.aliexpress.com/e/_DDQpNWZ) \] (RTL8157/Type-A and C)
-* [WAVLINK/WiNSTARS WS-NWU340G](https://amzn.to/3MVG5QF) (RTL8157/Type-C, report needed)
+* [WAVLINK/WiNSTARS WS-NWU340G](https://amzn.to/3MVG5QF) (RTL8157/Type-C)
+
+**KNOWN ISSUES**:
+* Link speeds are not reported correctly.
+* Using [the beta release driver](https://github.com/bb-qq/r8152/releases/tag/2.18.1-2) is required to enable Jumbo Frame.
 
 ## How to install
 
