@@ -1,29 +1,29 @@
 # DSM driver for realtek RTL8152/RTL8153/RTL8156/RTL8157 based USB Ethernet adapters
 
-This is a Realtek USB ethernet driver package for Synology NASes.
+This is a Realtek USB ethernet driver package for Synology NAS devices.
 
 * RTL8152/RTL8153: 1.0Gbps
 * RTL8156: 2.5Gbps
 * RTL8157: 5Gbps
 
-You may also be interested in my other projects:
+You might also be interested in my other projects:
 * [AQC111U(5Gbps ethernet) driver package for Synology NASes](https://github.com/bb-qq/aqc111)
 * [UASP(USB Attached SCSI Protocol for external storage devices) driver package for Synology NASes](https://github.com/bb-qq/uas)
 
 ## ⚠️**WARNING**
 
-It has been confirmed that this driver has been modified and reprinted on other sites.
+It has been confirmed that this driver has been modified and repackaged on other websites.
 
-Since this driver works with root privileges, **DO NOT USE IT OBTAINED FROM OTHER SITES**.
+Since this driver works with root privileges, **DO NOT USE IT OBTAINED FROM OTHER WEBSITES**.
 
 ## Supported NAS platform
 
 * DSM 7.x and 6.2
-* Almost all models released after 2017
-  * Older models also work, but you may not have enough performance.
+* Almost all models released after 2017.
+  * Older models may also work, but you might not experience optimal performance.
   * [Compatibility reports](https://github.com/bb-qq/r8152/wiki/Compatibility) by the community will help you.
 
-You can download drivers from the [release page](https://github.com/bb-qq/r8152/releases) and determine a proper driver for your model from [knowledge base of Synology](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), 
+You can download the drivers from the [release page](https://github.com/bb-qq/r8152/releases) and determine the appropriate driver for your model from [Synology knowledge base](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), 
 
 I would appreciate it if you could let me know whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
 
@@ -31,9 +31,9 @@ I would appreciate it if you could let me know whether it works. If you have any
 
 ### Author's environment
 
-The author uses the following environments daily and it has confirmed that these devices work stably.
+The author uses the following environment daily and it has confirmed that these devices work stably.
 
-*Disclaimer*: The following product links are affiliate links. If you purchase them, I might earn a small commission at no extra cost to you.
+*Disclaimer*: The following product links are affiliate links. If you purchase through them, I might earn a small commission at no extra cost to you.
 
 * NAS
   * DS918+ (apollolake) with 16GB RAM
@@ -54,22 +54,22 @@ The author uses the following environments daily and it has confirmed that these
 
 See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) for the latest information.
 
-* If you have other products not listed and it does not work, please create an issue with the output of lsusb.
+* If you have other products not listed and that do not work, please create an issue with the output of `lsusb`.
 * If you use a product with a Type-C connector, you will need a connector or cable to convert it to Type-A.
-  * For stable device operation, I recommend using a USB 3.2gen2 10Gbps compatible cable.
-  * A 5Gbps cable is sufficient for this driver to work, but a 10Gbps capable cable can be expected to have higher transmission quality.
+  * For stable device operation, I recommend using a USB 3.2 Gen2 10Gbps compatible cable.
+  * While a 5Gbps cable is sufficient for this driver to work, a 10Gbps capable cable is expected to offer higher transmission quality.
 
 ### RTL8156(2.5Gbps) based devices
 
-**INFO**: Products using RTL8156**BG** have dramatically lower power consumption(up to 64% decrease) and heat generation than those using RTL8156.
+**INFO**: Products using RTL8156**BG** have dramatically lower power consumption (up to a 64% decrease) and generate less heat compared to those using RTL8156.
 
 * [ASUSTOR AS-U2.5G](https://amzn.to/2ZRx1pi) (RTL8156/Type-C to A)
-  * NOTE: The included Type A-C conversion adapter is directional. There is a mark on one side of the USB-C connector that must be on the same side as the USB logo on the adapter.
+  * NOTE: The included Type A to C conversion adapter is directional. There is a mark on one side of the USB-C connector that must face the same side as the USB logo on the adapter.
 * [ASUSTOR AS-U2.5G2](https://amzn.to/3u5wUH4) (RTL8156B/Type-C to A)
-  * NOTE: Same above.
+  * NOTE: Same as above.
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (RTL8156/Type-A)
 * [TRENDnet TUC-ET2G](https://amzn.to/2PLmR5v) (RTL8156(V1.0)/RTL8156BG(V2.0)/Type-C)
-  * NOTE: Customer support states that RTL8156BG was adopted in V2.0. However, there is no way to distinguish V1.0 from V2.0. Can we expect the new ones to be v2.0? 
+  * NOTE: Customer support states that RTL8156BG was adopted in V2.0. However, there is no way to distinguish V1.0 from V2.0. Can we assume the new ones to be v2.0? 
 * [ASUS USB-C2500](https://amzn.to/45TS6Nv) (RTL8156B/Type-A)
 * [CableCreation 2.5G Ethernet to USB Adapter](https://amzn.to/39yfZyj) (RTL8156/Type-A)
 * [UGREEN USB C to 2.5G Ethernet Adapter (2019)](https://amzn.to/3fzXmfE) (RTL8156/Type-C)
@@ -84,7 +84,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
 
 ### RTL8157(5Gbps) based devices
 
-If you find other products, I would appreciate it if you could let me know.
+If you find other products, please let me know.
 
 * WisdPi WP-UT5 \[ [Amazon](https://amzn.to/3TA3RWh) [AliExpress](https://s.click.aliexpress.com/e/_DDQpNWZ) \] (RTL8157/Type-A and C)
 * [WAVLINK/WiNSTARS WS-NWU340G](https://amzn.to/3MVG5QF) (RTL8157/Type-C)
@@ -97,20 +97,20 @@ If you find other products, I would appreciate it if you could let me know.
 
 ### Preparation
 
-[Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and login to your NAS.
+[Enable SSH](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet) and log in to your NAS.
 
 ### Installation
 
 1. Go to "Package Center"
 2. Press "Manual Install"
 3. Choose a driver package downloaded from the [release page](https://github.com/bb-qq/r8152/releases).
-4. [DSM7] The installation will fail the first time. After that, run the following command from the SSH terminal:
+4. [DSM7] The installation will fail the first time. After that, run the following commands from the SSH terminal:
    * `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
    * `sudo chmod a+rx /opt /opt/sbin`
-5. [DSM7] Retry installation. 
+5. [DSM7] Retry the installation. 
    * You don't need the above DSM7-specific steps at the next time.
 6. Reboot your NAS.
-   * This procedure is not usually necessary, but many have reported that a reboot was necessary, so please reboot just in case.
+   * This procedure is not usually necessary, but many users have reported that a reboot was necessary, so please reboot just in case.
 7. Open the driver package from the Package Center and start the driver manually.
 
 https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
@@ -121,16 +121,16 @@ https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
 You can configure the IP addresses and MTU of the added NICs from the DSM UI in the same way as the built-in NICs.
 
-Option: I recommend setting MTU to 9000 and SMB protocol version to v3 for better performance.
+Option: I recommend setting the MTU to 9000 and the SMB protocol version to v3 for better performance.
 
 ## Performance test
 
 ### Environment
 * DS918+ (USB-LAN2500R)
 * DSM 6.2
-* direct connection with PC (AQN-107: discontinued, but almost equivalent to [ASUS XG-C100C](https://amzn.to/3fPJUX3))
+* direct connection to PC (AQN-107: discontinued, but almost equivalent to [ASUS XG-C100C](https://amzn.to/3fPJUX3))
 * [native iperf3](http://www.jadahl.com/iperf-arp-scan/DSM_6.2/)
-    * using docker causes high CPU load
+    * using Docker causes a high CPU load
 
 ### Result
 ````
