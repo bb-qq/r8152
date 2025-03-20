@@ -12,6 +12,10 @@ log_root="${package_root}/var/log"
 apply_if_config()
 {
   target_interface_name=$1
+  if [[ -v OVS_VLAN_ID ]]
+  then
+    ovs-vsctl set port $target_interface_name tag=$OVS_VLAN_ID
+  fi
   if [[ ! -v BOOTPROTO ]] || [ "$BOOTPROTO" = "dhcp" ]
   then
     synonet --dhcp $target_interface_name || true
