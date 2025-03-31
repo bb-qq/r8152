@@ -24150,6 +24150,7 @@ int rtl8152_get_settings(struct net_device *netdev, struct ethtool_cmd *cmd)
 	struct r8152 *tp = netdev_priv(netdev);
 	u16 bmcr, bmsr;
 	int ret, advert;
+	u32 speed_val;
 
 	ret = usb_autopm_get_interface(tp->intf);
 	if (ret < 0)
@@ -24282,21 +24283,23 @@ int rtl8152_get_settings(struct net_device *netdev, struct ethtool_cmd *cmd)
 		u16 speed = rtl8152_get_speed(tp);
 
 		if (speed & _100bps)
-			cmd->speed = SPEED_100;
+			speed_val = SPEED_100;
 		else if (speed & _10bps)
-			cmd->speed = SPEED_10;
+			speed_val = SPEED_10;
 		else if (tp->mii.supports_gmii && (speed & _1000bps))
-			cmd->speed = SPEED_1000;
+			speed_val = SPEED_1000;
 		else if (tp->support_2500full && (speed & _2500bps))
-			cmd->speed = SPEED_2500;
-
-		/* The legacy API couldn't support 5G speed */
+			speed_val = SPEED_2500;
+		else if (tp->support_5000full && (speed & _5000bps))
+			speed_val = SPEED_5000;
 
 		cmd->duplex = (speed & FULL_DUP) ? DUPLEX_FULL : DUPLEX_HALF;
 	} else {
-		cmd->speed = SPEED_UNKNOWN;
+		speed_val = SPEED_UNKNOWN;
 		cmd->duplex = DUPLEX_UNKNOWN;
 	}
+
+	ethtool_cmd_speed_set(cmd, speed_val);
 
 out1:
 	mutex_unlock(&tp->control);
