@@ -5,19 +5,28 @@
 TARGET := r8152.ko
 CONFIG_CTAP_SHORT = ON
 
-obj-m	 := r8152.o
-#	EXTRA_CFLAGS += -DRTL8152_S5_WOL
-#	EXTRA_CFLAGS += -DRTL8152_DEBUG
-ifneq (,$(filter OFF off, $(CONFIG_CTAP_SHORT)))
-	EXTRA_CFLAGS += -DCONFIG_CTAP_SHORT_OFF
-endif
+#ifneq ($(KERNELRELEASE),)
+	obj-m	 := r8152.o
+#	ccflags-y += -DRTL8152_S5_WOL
+#	ccflags-y += -DRTL8152_DEBUG
 
-# ifeq (TRUE, $(shell test $(VERSION) -lt 5 && echo "TRUE" || \
-# 	test $(VERSION) -eq 5 && test $(PATCHLEVEL) -lt 12 && echo "TRUE"))
-	EXTRA_CFLAGS += -DLINUX_VERSION_MAJOR=$(VERSION)
-	EXTRA_CFLAGS += -DLINUX_VERSION_PATCHLEVEL=$(PATCHLEVEL)
-	EXTRA_CFLAGS += -DLINUX_VERSION_SUBLEVEL=$(SUBLEVEL)
-# endif
+	ifneq (,$(filter OFF off, $(CONFIG_CTAP_SHORT)))
+		ccflags-y += -DCONFIG_CTAP_SHORT_OFF
+	endif
+
+#	ifeq (TRUE, $(shell test $(VERSION) -lt 5 && echo "TRUE" || \
+#		test $(VERSION) -eq 5 && test $(PATCHLEVEL) -lt 12 && echo "TRUE"))
+		ccflags-y += -DLINUX_VERSION_MAJOR=$(VERSION)
+		ccflags-y += -DLINUX_VERSION_PATCHLEVEL=$(PATCHLEVEL)
+		ccflags-y += -DLINUX_VERSION_SUBLEVEL=$(SUBLEVEL)
+#	endif
+#else
+#	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+#	PWD :=$(shell pwd)
+#	TARGET_PATH := kernel/drivers/net/usb
+#	INBOXDRIVER := $(shell find $(subst build,$(TARGET_PATH),$(KERNELDIR)) -name r8152.ko.* -type f)
+#	RULEFILE = 50-usb-realtek-net.rules
+#	RULEDIR = /etc/udev/rules.d/
 
 .PHONY: all
 all: modules spk_su

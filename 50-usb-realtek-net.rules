@@ -9,7 +9,7 @@ ENV{REALTEK_MODE1}="1"
 ENV{REALTEK_MODE2}="3"
 
 # Realtek
-ATTR{idVendor}=="0bda", ATTR{idProduct}=="815[2,3,5,6,7]", ATTR{bConfigurationValue}!="$env{REALTEK_MODE1}", ATTR{bConfigurationValue}="$env{REALTEK_MODE1}"
+ATTR{idVendor}=="0bda", ATTR{idProduct}=="815[2,3,5,6,7,a]", ATTR{bConfigurationValue}!="$env{REALTEK_MODE1}", ATTR{bConfigurationValue}="$env{REALTEK_MODE1}"
 ATTR{idVendor}=="0bda", ATTR{idProduct}=="8053", ATTR{bcdDevice}=="e???", ATTR{bConfigurationValue}!="$env{REALTEK_MODE2}", ATTR{bConfigurationValue}="$env{REALTEK_MODE2}"
 
 # Samsung
