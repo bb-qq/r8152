@@ -18,6 +18,10 @@ It has been confirmed that this driver has been modified and repackaged on other
 
 Since this driver works with root privileges, **DO NOT USE IT OBTAINED FROM OTHER WEBSITES**.
 
+Even if there are no problems now, there is a possibility that malicious code will be added through automatic updates.
+
+If you have installed it, I strongly recommend resetting your Synology system partition.
+
 ## Supported NAS platform
 
 * DSM 7.x and 6.2
