@@ -5,7 +5,7 @@ source /pkgscripts-ng/include/pkg_util.sh
 
 package="r8152"
 version="2.19.2-2"
-displayname="RTL8152/RTL8153 driver"
+displayname="RTL8152/8153/8156/8157/8159 driver"
 maintainer="bb-qq"
 arch="$(pkg_get_platform)"
 install_type="package"
@@ -35,6 +35,6 @@ cat <<EOS > `dirname $0`/SynoBuildConf/depends
 all="${PRODUCT_VERSION}"
 EOS
 
-description="Realtek RTL8152/RTL8153 Based USB Ethernet Adapters driver.${INSTRUCTION}"
+description="Realtek RTL8152/8153/8156/8157/8159 Based USB ethernet driver for $(pkg_get_platform) platforms. ${INSTRUCTION}"
 
 pkg_dump_info
