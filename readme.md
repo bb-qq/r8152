@@ -119,7 +119,7 @@ If you find other products, please let me know.
    * This procedure is not usually necessary, but many users have reported that a reboot was necessary, so please reboot just in case.
 7. Open the driver package from the Package Center and start the driver manually. 
    * Or run the following comannd from the SSH terminal:
-     * `synosystemctl enable pkgctl-r8152` (DSM 7.x) 
+     * `sudo synosystemctl enable pkgctl-r8152` (DSM 7.x) 
 
 https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
