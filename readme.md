@@ -35,6 +35,8 @@ I would appreciate it if you could let me know whether it works. If you have any
 
 ***NOTE***: I recommend connecting devices using front ports because some users have reported stability issues when using rear ports.
 
+***NOTE 2***: Although USB-C connectors are reversible, USB-C to USB-A adaptors that support USB 3 (blue internal plastic) only give full speed in one orientation. So when in the wong orentation a USB-C 2.5Gbps dongle may only connect at 1Gbps and the solution is to flip the adaptor.
+
 ### Author's environment
 
 The author uses the following environment daily and it has confirmed that these devices work stably.
