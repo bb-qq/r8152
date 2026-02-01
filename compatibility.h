@@ -9,6 +9,10 @@
 #include <linux/version.h>
 #include <linux/in.h>
 #include <linux/acpi.h>
+// FIXME: Some platform do not have asm/acpi.h which is included by acpi/acpi.h
+#ifdef ACPI_TYPE_BUFFER
+#include <acpi/acpi.h>
+#endif
 
 #if defined(RTL8152_S5_WOL) && defined(CONFIG_PM)
 #include <linux/reboot.h>
@@ -52,12 +56,19 @@
 		     (skb) = (next_skb), (next_skb) = (skb) ? (skb)->next : NULL)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0)
 	#ifndef __has_attribute
+	# define __GCC4_has_attribute___fallthrough__         0
 	# define __has_attribute(x)         0
 	#endif
 
 	#if __has_attribute(__fallthrough__)
 	# define fallthrough                    __attribute__((__fallthrough__))
 	#else
+	# if __has_attribute (__fallthrough__)
+	#  define fallthrough                    __attribute__((__fallthrough__))
+	# endif
+	#endif
+	
+	#ifndef fallthrough
 	# define fallthrough                    do {} while (0)  /* fallthrough */
 	#endif
 
@@ -107,20 +118,80 @@
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0)
 	#define ether_addr_copy(dst, src)		memcpy(dst, src, ETH_ALEN)
+
+	// Added for old platforms
+	enum skb_free_reason {
+		SKB_REASON_CONSUMED,
+		SKB_REASON_DROPPED,
+	};
+	static inline void dev_consume_skb_irq(struct sk_buff *skb)
+	{
+		dev_kfree_skb_irq(skb);
+	}
+	static inline void dev_consume_skb_any(struct sk_buff *skb)
+	{
+		dev_kfree_skb_any(skb);
+	}
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,13,0)
 	#define BIT(nr)					(1UL << (nr))
 	#define BIT_ULL(nr)				(1ULL << (nr))
 	#define BITS_PER_BYTE				8
 	#define reinit_completion(x)			((x)->done = 0)
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,12,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0)
 	#define DEVICE_ATTR_RW(_name) \
 		struct device_attribute dev_attr_##_name = __ATTR(_name, 0644, _name##_show, _name##_store)
 	#define DEVICE_ATTR_RO(_name) \
 		struct device_attribute dev_attr_##_name = __ATTR_RO(_name)
+
+	// Added for old platforms
+	#ifndef CLASS_ATTR_RW
+	#define CLASS_ATTR_RW(_name) \
+		struct class_attribute class_attr_##_name = __ATTR_RW(_name)
+	#endif
+	#ifndef CLASS_ATTR_RO
+	#define CLASS_ATTR_RO(_name) \
+		struct class_attribute class_attr_##_name = __ATTR_RO(_name)
+	#endif
+	#define ATTRIBUTE_GROUPS_BACKPORT(_name) \
+	static struct BP_ATTR_GRP_STRUCT _name##_dev_attrs[ARRAY_SIZE(_name##_attrs)];\
+	static void init_##_name##_attrs(void)				\
+	{									\
+		int i;								\
+		for (i = 0; _name##_attrs[i]; i++)				\
+			_name##_dev_attrs[i] =				\
+				*container_of(_name##_attrs[i],		\
+						struct BP_ATTR_GRP_STRUCT,	\
+						attr);				\
+	}
+	#ifndef __ATTRIBUTE_GROUPS
+	#define __ATTRIBUTE_GROUPS(_name)				\
+	static const struct attribute_group *_name##_groups[] = {	\
+		&_name##_group,						\
+		NULL,							\
+	}
+	#endif /* __ATTRIBUTE_GROUPS */
+	#undef ATTRIBUTE_GROUPS
+	#define ATTRIBUTE_GROUPS(_name)					\
+	static const struct attribute_group _name##_group = {		\
+		.attrs = _name##_attrs,					\
+	};								\
+	static inline void init_##_name##_attrs(void) {}		\
+	__ATTRIBUTE_GROUPS(_name)
+
+	#define __ATTR_RW(_name) __ATTR(_name, 0644, _name##_show, _name##_store)
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
 	#define NETIF_F_HW_VLAN_CTAG_RX			NETIF_F_HW_VLAN_RX
 	#define NETIF_F_HW_VLAN_CTAG_TX			NETIF_F_HW_VLAN_TX
+
+	// Added for armadaxp and evansport
+	static inline void sg_unmark_end(struct scatterlist *sg)
+	{
+            sg->page_link &= ~0x02;
+	}
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0)
 	#define USB_DEVICE_INTERFACE_CLASS(vend, prod, cl) \
 		.match_flags = USB_DEVICE_ID_MATCH_DEVICE | \
@@ -144,6 +215,10 @@
 	#define MDIO_EEE_1000T				MDIO_AN_EEE_ADV_1000T	/* 1000T EEE cap */
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)
 	#define ETH_MDIO_SUPPORTS_C22			MDIO_SUPPORTS_C22
+
+	// Added for armadaxp and evansport
+	#define skb_add_rx_frag(skb, i, page, off, size, truesize) \
+		skb_add_rx_frag(skb, i, page, off, size)
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
 	#define module_usb_driver(__driver) \
@@ -525,6 +600,7 @@
 		return csum_ipv6_magic(saddr, daddr, len, IPPROTO_TCP, base);
 	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0) */
+#define NAPI_POLL_WEIGHT 64
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0) */
 	static inline bool usb_device_no_sg_constraint(struct usb_device *udev)
@@ -534,6 +610,7 @@
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,12,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,13,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0) */
+
 	static inline int skb_to_sgvec_nomark(struct sk_buff *skb,
 					      struct scatterlist *sg,
 					      int offset, int len)
