@@ -54,6 +54,12 @@
 	Set the rx copybreak value in bytes.
 	# ethtool --set-tunable eth0 rx-copybreak 256
 
+	Get the current tx copybreak value in bytes.
+	# ethtool --get-tunable eth0 tx-copybreak
+
+	Set the tx copybreak value in bytes.
+	# ethtool --set-tunable eth0 tx-copybreak 256
+
 - Flow control
 
 	Queries the specified Ethernet device for pause parameter information.
