@@ -63,6 +63,7 @@
 
 	#define MDIO_EEE_2_5GT			0x0001  /* 2.5GT EEE cap */
 	#define MDIO_EEE_5GT			0x0002  /* 5GT EEE cap */
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5,3,10)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,2,0)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,1,0)
 	#define MDIO_AN_10GBT_CTRL_ADV2_5G	0x0080  /* Advertise 2.5GBASE-T */
@@ -597,6 +598,11 @@
 //		return PCI_DEVID(dev->bus->number, dev->devfn);
 //	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,2,0) */
+	static inline bool skb_queue_empty_lockless(const struct sk_buff_head *list)
+	{
+		return READ_ONCE(list->next) == (const struct sk_buff *) list;
+	}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,3,10) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0) */
 	static inline void tcp_v6_gso_csum_prep(struct sk_buff *skb)
@@ -658,6 +664,8 @@ enum rtl_cmd {
 	RTLTOOL_USB_INFO,
 	RTL_ENABLE_USB_DIAG,
 	RTL_DISABLE_USB_DIAG,
+	RTLTOOL_PHY_OCP_READ,
+	RTLTOOL_PHY_OCP_WRITE,
 
 	RTLTOOL_INVALID
 };
