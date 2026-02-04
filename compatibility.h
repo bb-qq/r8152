@@ -93,6 +93,16 @@
 	#endif
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,9,0)
 	#define BMCR_SPEED10				0x0000
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,7,0)
+/* legacy drivers only, netdev_start_xmit() sets txq->trans_start */
+static inline void netif_trans_update(struct net_device *dev)
+{
+	struct netdev_queue *txq = netdev_get_tx_queue(dev, 0);
+
+	if (txq->trans_start != jiffies)
+		txq->trans_start = jiffies;
+}
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,5,0)
 	#define NETIF_F_CSUM_MASK			NETIF_F_ALL_CSUM
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
@@ -634,6 +644,7 @@
 		return -EOPNOTSUPP;
 	}
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,5,0) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,7,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,9,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,10,0) */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,12,0) */
