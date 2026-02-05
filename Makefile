@@ -4,6 +4,7 @@
 
 TARGET := r8152.ko
 CONFIG_CTAP_SHORT = ON
+ccflags-y += -std=gnu99
 
 #ifneq ($(KERNELRELEASE),)
 	obj-m	 := r8152.o
