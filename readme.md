@@ -6,7 +6,7 @@ This is a Realtek USB ethernet driver package for Synology NAS devices.
 * RTL8156: 2.5Gbps
 * RTL8157: 5Gbps
 * RTL8159: 10Gbps
-  * NOTE: No Synology device supports USB 3.2 Gen2, so you won't be able to get the most out of it.
+  * NOTE: USB 3.2 Gen2 support is available only on a limited number of Synology platforms, so you may not be able to utilize it on most models.
   
 You might also be interested in my other projects:
 * [AQC111U(5Gbps ethernet) driver package for Synology NASes](https://github.com/bb-qq/aqc111)
