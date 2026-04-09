@@ -7,7 +7,7 @@ This is a Realtek USB ethernet driver package for Synology NAS devices.
 * RTL8157: 5Gbps
 * RTL8159: 10Gbps
   * NOTE: USB 3.2 Gen2 support is available only on a limited number of Synology platforms, so you may not be able to utilize it on most models.
-  
+
 You might also be interested in my other projects:
 * [AQC111U(5Gbps ethernet) driver package for Synology NASes](https://github.com/bb-qq/aqc111)
 * [UASP(USB Attached SCSI Protocol for external storage devices) driver package for Synology NASes](https://github.com/bb-qq/uas)
@@ -29,7 +29,7 @@ If you have installed it, I strongly recommend resetting your Synology system pa
   * Older models may also work, but you might not experience optimal performance.
   * [Compatibility reports](https://github.com/bb-qq/r8152/wiki/Compatibility) by the community will help you.
 
-You can download the drivers from the [release page](https://github.com/bb-qq/r8152/releases) and determine the appropriate driver for your model from [Synology knowledge base](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have), 
+You can download the drivers from the [release page](https://github.com/bb-qq/r8152/releases) and determine the appropriate driver for your model from [Synology knowledge base](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/Compatibility_Peripherals/What_kind_of_CPU_does_my_NAS_have),
 
 I would appreciate it if you could let me know whether it works. If you have any problems, the [Troubleshooting](https://github.com/bb-qq/r8152/wiki/Troubleshooting) page may help.
 
@@ -75,7 +75,7 @@ See the [Compatibility page](https://github.com/bb-qq/r8152/wiki/Compatibility) 
   * NOTE: Same as above.
 * [CLUB 3D CAC-1420](https://amzn.to/2ZPmzKD) (RTL8156/Type-A)
 * [TRENDnet TUC-ET2G](https://amzn.to/2PLmR5v) (RTL8156(V1.0)/RTL8156BG(V2.0)/Type-C)
-  * NOTE: Customer support states that RTL8156BG was adopted in V2.0. However, there is no way to distinguish V1.0 from V2.0. Can we assume the new ones to be v2.0? 
+  * NOTE: Customer support states that RTL8156BG was adopted in V2.0. However, there is no way to distinguish V1.0 from V2.0. Can we assume the new ones to be v2.0?
 * [ASUS USB-C2500](https://amzn.to/45TS6Nv) (RTL8156B/Type-A)
 * [CableCreation 2.5G Ethernet to USB Adapter](https://amzn.to/39yfZyj) (RTL8156/Type-A)
 * [UGREEN USB C to 2.5G Ethernet Adapter (2019)](https://amzn.to/3fzXmfE) (RTL8156/Type-C)
@@ -113,17 +113,33 @@ If you find other products, please let me know.
 4. [DSM7] The installation will fail the first time. After that, run the following commands from the SSH terminal:
    * `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
    * `sudo chmod a+rx /opt /opt/sbin`
-5. [DSM7] Retry the installation. 
+5. [DSM7] Retry the installation.
    * You don't need the above DSM7-specific steps at the next time unless `/opt/sbin/spk_su` is deleted, e.g. if reparing the system partition.
 6. Reboot your NAS.
    * This procedure is not usually necessary, but many users have reported that a reboot was necessary, so please reboot just in case.
-7. Open the driver package from the Package Center and start the driver manually. 
+7. Open the driver package from the Package Center and start the driver manually.
    * Or run the following comannd from the SSH terminal:
-     * `sudo synosystemctl enable pkgctl-r8152` (DSM 7.x) 
+     * `sudo synosystemctl enable pkgctl-r8152` (DSM 7.x)
 
 https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
 *Warning*: Do not use Safari for this operation.
+
+### DSM upgrades
+
+In case of minor (`7.a` -> `7.b`) or major (`7.x` -> `8.y`) version upgrades please use the following steps:
+
+1. Wait until the new version of this driver has been released. It takes some time until Synology releases new version of Synology Toolkit for new DSM version. Keep in mind that the version package must end with the DSM version suffix (e.g. `_7.3.spk`)
+2. Disconnect the realtek USB adapter. Connect NAS via the built-in LAN port.
+3. Upgrade DSM.
+4. Manually install the compatible version of this driver.
+5. The installation will fail the first time. After that, run the following commands from the SSH terminal:
+   * `sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
+   * `sudo chmod a+rx /opt /opt/sbin`
+6. Retry the installation.
+7. Reboot your NAS.
+8. Re-plug realtek USB adapter and LAN cable.
+9. The driver should start automatically.
 
 ## How to configure
 
