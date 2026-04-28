@@ -29,14 +29,23 @@ create_spk(){
 	### Copy package center scripts to PKG_DIR
 	mkdir -p $scripts_dir
 	cp -av scripts/* $scripts_dir
-    cp -av *.rules $scripts_dir
-	
+	cp -av *.rules $scripts_dir
+
 	### Copy package conf to PKG_DIR
 	mkdir -p $conf_dir
 	cp -av conf/* $conf_dir
 
 	### Copy package icon
 	cp -av PACKAGE_ICON*.PNG $PKG_DIR
+
+	### Copy wizard UI files if they exist and build is not for DSM 6
+	PRODUCT_VERSION_WITHOUT_MICRO=$(echo ${PRODUCT_VERSION} | sed -E 's/^([0-9]+\.[0-9]+).+$/\1/')
+	if [ 1 -eq $(echo "${PRODUCT_VERSION_WITHOUT_MICRO} >= 7.0" | bc) ]; then
+		if [ -n "$(ls -A WIZARD_UIFILES 2>/dev/null)" ]; then
+			mkdir -p $PKG_DIR/WIZARD_UIFILES
+			cp -av WIZARD_UIFILES/* $PKG_DIR/WIZARD_UIFILES
+		fi
+	fi
 
 	### Generate INFO file
 	./INFO.sh > INFO
