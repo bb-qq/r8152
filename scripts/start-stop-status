@@ -49,6 +49,73 @@ apply_if_config()
   fi
 }
 
+save_vlan_interfaces()
+{
+  interface_name=$1
+  config_dir=/etc/sysconfig/network-scripts
+
+  for saved_config in ${package_root}/etc/ifcfg-${interface_name}.*
+  do
+    [ -f "$saved_config" ] || continue
+    saved_if_name=$(basename "$saved_config" | sed 's/^ifcfg-//')
+    if [ ! -f "${config_dir}/ifcfg-${saved_if_name}" ]
+    then
+      rm -f "$saved_config"
+      echo "Removed stale VLAN config for ${saved_if_name}"
+    fi
+  done
+
+  for vlan_config in ${config_dir}/ifcfg-${interface_name}.*
+  do
+    [ -f "$vlan_config" ] || continue
+    vlan_if_name=$(basename "$vlan_config" | sed 's/^ifcfg-//')
+    cp "$vlan_config" "${package_root}/etc/ifcfg-${vlan_if_name}"
+    echo "Saved VLAN config for ${vlan_if_name}"
+    ifconfig "$vlan_if_name" down 2>/dev/null || true
+    ip link delete "$vlan_if_name" 2>/dev/null || true
+  done
+}
+
+restore_vlan_interfaces()
+{
+  interface_name=$1
+  config_dir=/etc/sysconfig/network-scripts
+
+  for vlan_config in ${package_root}/etc/ifcfg-${interface_name}.*
+  do
+    [ -f "$vlan_config" ] || continue
+    vlan_if_name=$(basename "$vlan_config" | sed 's/^ifcfg-//')
+    vlan_id=${vlan_if_name#${interface_name}.}
+
+    cp "$vlan_config" "${config_dir}/ifcfg-${vlan_if_name}"
+
+    if [ ! -e "/sys/class/net/${vlan_if_name}" ]
+    then
+      if ! ip link add link "$interface_name" name "$vlan_if_name" type vlan id "$vlan_id" 2>/dev/null
+      then
+        echo "Failed to create VLAN interface ${vlan_if_name}, skipping"
+        continue
+      fi
+    fi
+
+    if ! ifconfig "$vlan_if_name" up 2>/dev/null
+    then
+      echo "Failed to bring up ${vlan_if_name}, skipping"
+      continue
+    fi
+
+    (
+      unset BOOTPROTO IPADDR NETMASK OVS_VLAN_ID
+      if [ -r "${config_dir}/ifcfg-${vlan_if_name}" ]
+      then
+        source "${config_dir}/ifcfg-${vlan_if_name}"
+      fi
+      apply_if_config "$vlan_if_name"
+    ) || echo "Failed to configure ${vlan_if_name}"
+    echo "Restored VLAN interface ${vlan_if_name}"
+  done
+}
+
 is_ovs_enable()
 {
     if [ ! -f  '/usr/syno/etc/synoovs/ovs_reg.conf' ]; then
@@ -119,6 +186,7 @@ set_interfaces()
   if [ -n ${target_interface_name} ] && [ ! -e "/sys/class/net/${target_interface_name}" ] && [ "$action" = "down" ]
   then
     echo "${target_interface_name} is already detached."
+    save_vlan_interfaces ${target_interface_name}
     set_ovs_interface ${target_interface_name} down
     return 0
   fi
@@ -146,9 +214,13 @@ set_interfaces()
     then
       config_file=/etc/sysconfig/network-scripts/ifcfg-$interface_name
       config_storage_location=$package_root/etc/ifcfg-$interface_name
-      if [ -f "$config_file" ] && [ "$action" = "down" ]
+      if [ "$action" = "down" ]
       then
-        cp $config_file $config_storage_location
+        save_vlan_interfaces $interface_name
+        if [ -f "$config_file" ]
+        then
+          cp $config_file $config_storage_location
+        fi
       elif [ "$action" = "up" ] && [ -f "$config_storage_location" ]
       then
         cp $config_storage_location $config_file
@@ -162,6 +234,11 @@ set_interfaces()
           source $config_file
         fi
         apply_if_config $interface_name
+      fi
+
+      if [ "$action" = "up" ]
+      then
+        restore_vlan_interfaces $interface_name
       fi
 
       if [ "$action" = "up" ] && [ -e ${script_root}/apply-private-flags ]
