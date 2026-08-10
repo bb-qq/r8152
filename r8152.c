@@ -32637,10 +32637,13 @@ static int rtltool_ioctl(struct r8152 *tp, struct ifreq *ifr)
 	int	ret;
 	bool    compat = in_compat_syscall();
 
+#ifdef CONFIG_COMPAT
 	if (compat) {
 		struct compat_ifreq *ifr32 = (struct compat_ifreq *)ifr;
 		myptr = (struct rtltool_cmd *)compat_ptr(ifr32->ifr_data);
-	} else {
+	} else
+#endif /* CONFIG_COMPAT */
+	{
 		myptr = (struct rtltool_cmd *)ifr->ifr_data;
 	}
 
