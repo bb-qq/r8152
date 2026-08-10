@@ -13,6 +13,7 @@
 #ifdef ACPI_TYPE_BUFFER
 #include <acpi/acpi.h>
 #endif
+#include <linux/compat.h>
 
 #if defined(RTL8152_S5_WOL) && defined(CONFIG_PM)
 #include <linux/reboot.h>
@@ -771,7 +772,10 @@ struct rtltool_cmd {
 	__u32	offset;
 	__u32	byteen;
 	__u32	data;
-	void	*buf;
+	union {
+		void *buf;
+		__u64 reserved;
+	};
 	struct usb_device_info nic_info;
 	struct sockaddr ifru_addr;
 	struct sockaddr ifru_netmask;
