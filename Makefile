@@ -5,6 +5,7 @@
 TARGET := r8152.ko
 CONFIG_CTAP_SHORT = ON
 ccflags-y += -std=gnu99
+ccflags-y += -Wno-array-bounds
 
 #ifneq ($(KERNELRELEASE),)
 	obj-m	 := r8152.o
