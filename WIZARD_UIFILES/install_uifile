@@ -1,0 +1,6 @@
+[{
+    "step_title": "Permission setup required",
+    "items": [{
+        "desc": "[DSM7 Note] If this is the first time you are installing this driver, special steps are required. See the <a target=\"_blank\" href=\"https://github.com/bb-qq/r8152#preparation\">readme</a> for details."
+    }]
+}]
