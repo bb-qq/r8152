@@ -115,6 +115,7 @@ If you find other products, please let me know.
    * `sudo chmod a+rx /opt /opt/sbin`
 5. Retry the installation. 
    * You don't need the above DSM7-specific steps at the next time unless `/opt/sbin/spk_su` is deleted, e.g. if reparing the system partition.
+   * **After a DSM upgrade**, if the package shows "Error", re-run these two commands — DSM upgrades can wipe `/opt/sbin/spk_su`. This is the most common cause of breakage after upgrading DSM (e.g. DSM 7.3.1 → 7.3.2).
 6. Reboot your NAS.
    * This procedure is not usually necessary, but many users have reported that a reboot was necessary, so please reboot just in case.
 7. Open the driver package from the Package Center and start the driver manually. 
@@ -124,6 +125,31 @@ If you find other products, please let me know.
 https://www.synology.com/en-us/knowledgebase/SRM/help/SRM/PkgManApp/install_buy
 
 *Warning*: Do not use Safari for this operation.
+
+## Troubleshooting
+
+### Package shows "Error" after a DSM upgrade
+
+**Symptoms**: Package Center shows "Error", `lsmod | grep r8152` returns nothing, or `dmesg` shows a kernel version magic mismatch.
+
+**Cause**: DSM upgrades can delete `/opt/sbin/spk_su`, which is required for the package to load the kernel module with the correct privileges.
+
+**Fix**: SSH into your NAS and re-run the DSM 7 first-time setup:
+
+```bash
+sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su
+sudo chmod a+rx /opt /opt/sbin
+```
+
+Then go to Package Center → r8152 → Stop → Start (or reinstall the package).
+
+**Verify**:
+```bash
+lsmod | grep r8152        # should show the module loaded
+ip addr show              # should show the new interface (e.g. eth2) with an IP
+```
+
+---
 
 ## How to configure
 
