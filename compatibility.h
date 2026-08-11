@@ -55,6 +55,14 @@
 	#define skb_list_walk_safe(first, skb, next_skb)                               \
 		for ((skb) = (first), (next_skb) = (skb) ? (skb)->next : NULL; (skb);  \
 		     (skb) = (next_skb), (next_skb) = (skb) ? (skb)->next : NULL)
+
+	/* Synology's DSM 4.4.302+ kernel already backports skb_queue_len_lockless. */
+	#if LINUX_VERSION_MAJOR != 4 || LINUX_VERSION_PATCHLEVEL != 4 || LINUX_VERSION_SUBLEVEL < 302
+	static inline __u32 skb_queue_len_lockless(const struct sk_buff_head *list_)
+	{
+		return READ_ONCE(list_->qlen);
+	}
+	#endif /* LINUX_VERSION_MAJOR != 4 || LINUX_VERSION_PATCHLEVEL != 4 || LINUX_VERSION_SUBLEVEL < 302 */
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0)
 	#ifndef __has_attribute
 	# define __GCC4_has_attribute___fallthrough__         0
