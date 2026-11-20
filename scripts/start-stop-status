@@ -100,11 +100,13 @@ set_ovs_interface()
 
       if [ "$action" = "up" ]
       then
-        if [ -r "$config_file_ovs" ]
-        then
-          source $config_file_ovs
-        fi
-        apply_if_config ovs_$interface_name
+        (
+          if [ -r "$config_file_ovs" ]
+          then
+            source $config_file_ovs
+          fi
+          apply_if_config ovs_$interface_name
+        )
       fi
     fi
   fi
@@ -157,11 +159,13 @@ set_interfaces()
       set_ovs_interface $interface_name $action
       if [ "$action" = "up" ] && ! is_ovs_enable
       then
-        if [ -r "$config_file" ]
-        then
-          source $config_file
-        fi
-        apply_if_config $interface_name
+        (
+          if [ -r "$config_file" ]
+          then
+            source $config_file
+          fi
+          apply_if_config $interface_name
+        )
       fi
 
       if [ "$action" = "up" ] && [ -e ${script_root}/apply-private-flags ]
